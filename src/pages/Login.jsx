@@ -23,6 +23,7 @@ const Login = () => {
         <h2 className='text-2xl'>Login</h2>
         <div className='w-full'>
           <Input
+            id='email-username'
             type='text'
             placeholder='Email or Unsername'
             {...register('username', {
@@ -37,6 +38,7 @@ const Login = () => {
         </div>
         <div className='w-full'>
           <Password
+            id='password'
             placeholder='Password'
             {...register('password', {
               required: 'Please enter your password.',

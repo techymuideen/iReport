@@ -8,6 +8,7 @@ const PasswordInput = forwardRef(({ placeholder, ...props }, ref) => {
   return (
     <div className='flex items-center w-full relative'>
       <input
+        id={props.id}
         ref={ref}
         className='py-2 border-[1px] bg-none w-full outline-none px-4 rounded-md'
         placeholder={placeholder}
@@ -26,7 +27,8 @@ const PasswordInput = forwardRef(({ placeholder, ...props }, ref) => {
 PasswordInput.displayName = 'PasswordInput';
 
 PasswordInput.propTypes = {
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };
 
 export default PasswordInput;
