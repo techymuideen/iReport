@@ -19,7 +19,7 @@ Input.displayName = 'Input';
 
 // Define PropTypes
 Input.propTypes = {
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   type: PropTypes.string.isRequired,
   className: PropTypes.string,
 };

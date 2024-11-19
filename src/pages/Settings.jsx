@@ -1,5 +1,13 @@
+import AccountUpdate from '../features/authentication/AccountUpdate';
+import PasswordUpdate from '../features/authentication/PasswordUpdate';
+
 const Settings = () => {
-  return <div>Settings</div>;
+  return (
+    <div>
+      <AccountUpdate />
+      <PasswordUpdate />
+    </div>
+  );
 };
 
 export default Settings;
