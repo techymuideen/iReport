@@ -4,6 +4,7 @@ import SelectVideo from './SelectVideo';
 import SelectImage from './SelectImage';
 import SelectLocation from './SelectLocation';
 import Button from '../../ui/Button';
+import MapBox from './MapBox';
 
 const ReportForm = () => {
   const [recordType, setRecordType] = useState('red-flag');
@@ -101,6 +102,11 @@ const ReportForm = () => {
         {videoError && <span className='text-red-500'>{videoError}</span>}
 
         <SelectLocation location={location} setLocation={setLocation} />
+        <div className='py-8'>
+          {location.lat && location.long && (
+            <MapBox location={location} setLocation={setLocation} />
+          )}
+        </div>
 
         <Button type='submit'>Submit Report</Button>
       </form>

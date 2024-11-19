@@ -8,6 +8,8 @@ const SelectLocation = ({ location, setLocation }) => {
         setLocation({
           lat: position.coords.latitude,
           long: position.coords.longitude,
+          zoom: 8,
+          scrollZoom: false,
         });
       });
     }
@@ -20,7 +22,7 @@ const SelectLocation = ({ location, setLocation }) => {
         type='button'
         onClick={handleLocation}
         className='bg-sky-600 text-white py-2 px-4 rounded-md'>
-        Add your current Location <BsFillGeoAltFill className='inline ml-2' />
+        Add a Location <BsFillGeoAltFill className='inline ml-2' />
       </button>
       {location.lat && location.long && (
         <p className='mt-2'>
