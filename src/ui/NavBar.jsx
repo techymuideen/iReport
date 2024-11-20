@@ -13,7 +13,7 @@ const NavBar = () => {
           <NavItem to='/' text='Overview'>
             <RxDashboard size={20} />
           </NavItem>
-          <NavItem to='/create-report' text='Create Report'>
+          <NavItem to='/report/create' text='Create Report'>
             <MdOutlineCreateNewFolder size={20} />
           </NavItem>
           <NavItem to='/manage-report' text='Manage Report'>

@@ -15,7 +15,7 @@ const Header = () => {
         {/* <button className='bg-blue-600 uppercase transition text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300'>
           <Link to='/login'> Log out</Link>
         </button> */}
-        <Link to='/profile' className='flex items-center gap-2'>
+        <Link to='/settings' className='flex items-center gap-2'>
           <img
             className='w-12 h-12 rounded-full'
             src={Profile}
