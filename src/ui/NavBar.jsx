@@ -7,7 +7,7 @@ import NavItem from './NavItem';
 
 const NavBar = () => {
   return (
-    <aside className='bg-sky-600 w-full md:w-64  md:min-h-full  py-12  flex-shrink-0'>
+    <aside className='bg-slate-700 w-full md:w-64  md:min-h-full  py-12  flex-shrink-0'>
       <nav>
         <ul className='space-y-1'>
           <NavItem to='/' text='Overview'>
