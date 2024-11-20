@@ -1,7 +1,9 @@
+import ReportOverview from '../features/report/ReportOverview';
+
 const Overview = () => {
   return (
     <div>
-      <h1>Overview</h1>
+      <ReportOverview />
     </div>
   );
 };

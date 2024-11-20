@@ -47,14 +47,15 @@ const MapBox = ({ location, setLocation }) => {
       initialViewState={{
         latitude: location.lat,
         longitude: location.long,
-        zoom: location.zoom,
+        zoom: 8,
       }}
+      interactive={Boolean(setLocation)}
       style={{ height: 400, width: '100%' }}
       mapStyle='mapbox://styles/mapbox/streets-v11'
       scrollZoom={location.scrollZoom}
       onClick={handleViewChange}>
       <Marker
-        draggable
+        draggable={Boolean(setLocation)}
         onDragEnd={handleViewChange}
         latitude={location.lat}
         longitude={location.long}
@@ -63,19 +64,21 @@ const MapBox = ({ location, setLocation }) => {
           <FaLocationDot size={20} fill='red' />
         </div>
       </Marker>
-      <NavigationControl position='bottom-right' />
-      <GeolocateControl
-        position='top-left'
-        trackUserLocation
-        onGeolocate={e =>
-          setLocation(prevLocation => ({
-            ...prevLocation,
-            lat: e.coords.latitude,
-            long: e.coords.longitude,
-          }))
-        }
-      />
-      <GeoCoder setLocation={setLocation} />
+      {Boolean(setLocation) && <NavigationControl position='bottom-right' />}
+      {Boolean(setLocation) && (
+        <GeolocateControl
+          position='top-left'
+          trackUserLocation
+          onGeolocate={e =>
+            setLocation(prevLocation => ({
+              ...prevLocation,
+              lat: e.coords.latitude,
+              long: e.coords.longitude,
+            }))
+          }
+        />
+      )}
+      {Boolean(setLocation) && <GeoCoder setLocation={setLocation} />}
     </ReactMapGL>
   );
 };
@@ -87,7 +90,7 @@ MapBox.propTypes = {
     zoom: PropTypes.number,
     scrollZoom: PropTypes.bool,
   }).isRequired,
-  setLocation: PropTypes.func.isRequired,
+  setLocation: PropTypes.func,
 };
 
 export default MapBox;

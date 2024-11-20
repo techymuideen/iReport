@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import SelectVideo from './SelectVideo';
 import SelectImage from './SelectImage';
@@ -6,11 +7,15 @@ import SelectLocation from './SelectLocation';
 import Button from '../../ui/Button';
 import MapBox from './MapBox';
 
-const ReportForm = () => {
-  const [recordType, setRecordType] = useState('red-flag');
-  const [images, setImages] = useState([]);
-  const [videos, setVideos] = useState([]);
-  const [location, setLocation] = useState({ lat: null, long: null });
+const EditReportForm = ({ initialData, title }) => {
+  const [recordType, setRecordType] = useState(
+    initialData.recordType || 'red-flag',
+  );
+  const [images, setImages] = useState(initialData.images || []);
+  const [videos, setVideos] = useState(initialData.videos || []);
+  const [location, setLocation] = useState(
+    initialData.location || { lat: null, long: null },
+  );
   const [imageError, setImageError] = useState('');
   const [videoError, setVideoError] = useState('');
 
@@ -18,7 +23,18 @@ const ReportForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    setValue,
+  } = useForm({
+    defaultValues: {
+      title: initialData.title || '',
+      description: initialData.description || '',
+    },
+  });
+
+  useEffect(() => {
+    setValue('title', initialData.title);
+    setValue('description', initialData.description);
+  }, [initialData, setValue]);
 
   const onSubmit = data => {
     console.log('Form Data:', data);
@@ -30,9 +46,10 @@ const ReportForm = () => {
 
   return (
     <div className='py-12 px-4 bg-white rounded-md'>
-      <h1 className='text-3xl font-semibold text-center mb-6'>Create Report</h1>
+      <h1 className='text-3xl font-semibold text-center mb-6'>{title}</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Buttons for Record Type */}
         <div className='flex justify-center mb-6'>
           <button
             type='button'
@@ -56,6 +73,7 @@ const ReportForm = () => {
           </button>
         </div>
 
+        {/* Form Fields */}
         <div className='mb-4'>
           <label htmlFor='title' className='block text-gray-700'>
             Title
@@ -87,6 +105,7 @@ const ReportForm = () => {
           )}
         </div>
 
+        {/* Media and Location Selectors */}
         <SelectImage
           images={images}
           setImages={setImages}
@@ -108,10 +127,27 @@ const ReportForm = () => {
           )}
         </div>
 
+        {/* Submit Button */}
         <Button type='submit'>Submit Report</Button>
       </form>
     </div>
   );
 };
 
-export default ReportForm;
+// Define PropTypes
+EditReportForm.propTypes = {
+  title: PropTypes.string.isRequired,
+  initialData: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+    recordType: PropTypes.oneOf(['red-flag', 'intervention']),
+    images: PropTypes.arrayOf(PropTypes.string),
+    videos: PropTypes.arrayOf(PropTypes.string),
+    location: PropTypes.shape({
+      lat: PropTypes.number,
+      long: PropTypes.number,
+    }),
+  }),
+};
+
+export default EditReportForm;

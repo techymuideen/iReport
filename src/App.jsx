@@ -11,7 +11,9 @@ import AboutUs from './pages/AboutUs';
 import DashboardLayout from './ui/DashboardLayout';
 import ManageReport from './pages/ManageReport';
 import Settings from './pages/Settings';
-import CreateReport from './pages/CreateReport'
+import CreateReport from './pages/CreateReport';
+import ReportDetailPage from './pages/ReportDetailPage';
+import EditReportPage from './pages/EditReportPage';
 
 function App() {
   const router = createBrowserRouter([
@@ -28,7 +30,7 @@ function App() {
               element: <Overview />,
             },
             {
-              path: 'create-report',
+              path: '/report/create',
               element: <CreateReport />,
             },
             {
@@ -39,6 +41,11 @@ function App() {
               path: '/settings',
               element: <Settings />,
             },
+            {
+              path: 'report/:reportId',
+              element: <ReportDetailPage />,
+            },
+            { path: 'report/edit/:reportId', element: <EditReportPage /> },
           ],
         },
         {

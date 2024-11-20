@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
 
+const MAX_TOTAL_SIZE = 1 * 1024 * 1024; // 10 MB in bytes
+
 const SelectImage = ({ images, setImages, setImageError }) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -8,6 +10,7 @@ const SelectImage = ({ images, setImages, setImageError }) => {
     },
     maxFiles: 4,
     onDrop: acceptedFiles => {
+      // Check for duplicate files
       const duplicates = acceptedFiles.filter(file =>
         images.some(image => image.name === file.name),
       );
@@ -17,11 +20,23 @@ const SelectImage = ({ images, setImages, setImageError }) => {
         return;
       }
 
+      // Check total number of files
       if (acceptedFiles.length + images.length > 4) {
         setImageError('You can only upload up to 4 images.');
         return;
       }
 
+      // Check total file size
+      const totalSize =
+        images.reduce((acc, image) => acc + image.size, 0) +
+        acceptedFiles.reduce((acc, file) => acc + file.size, 0);
+
+      if (totalSize > MAX_TOTAL_SIZE) {
+        setImageError('Total file size cannot exceed 10MB.');
+        return;
+      }
+
+      // Add valid files
       setImages([...images, ...acceptedFiles]);
       setImageError('');
     },
@@ -40,14 +55,18 @@ const SelectImage = ({ images, setImages, setImageError }) => {
             'border-dashed flex items-center justify-center h-32 border-2 p-4 text-center cursor-pointer',
         })}>
         <input {...getInputProps()} />
-        <p>Drag & drop images here, or click to select (4 Max)</p>
+        <p>
+          Drag & drop images here, or click to select (4 Max, Total size 10MB)
+        </p>
       </div>
       {images.length > 0 && (
         <div className='mt-4 flex flex-wrap gap-2 sm:gap-4'>
           {images.map((file, index) => (
             <div key={index} className='relative'>
               <img
-                src={URL.createObjectURL(file)}
+                src={
+                  typeof file === 'string' ? file : URL.createObjectURL(file)
+                }
                 alt='uploaded'
                 className='w-24 h-24 object-cover'
               />
@@ -66,7 +85,7 @@ const SelectImage = ({ images, setImages, setImageError }) => {
 };
 
 SelectImage.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  images: PropTypes.arrayOf(PropTypes.object || PropTypes.string).isRequired,
   setImages: PropTypes.func.isRequired,
   setImageError: PropTypes.func.isRequired,
 };
