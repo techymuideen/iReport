@@ -81,15 +81,15 @@ const Profile = () => {
           <h2 className='text-2xl font-semibold mb-4 text-center md:text-left'>
             Report Stats
           </h2>
-          <div className='w-full h-[20rem]'>
+          <div className='w-full h-[25rem] sm:h-[20rem]'>
             <ResponsiveContainer width='100%'>
               <PieChart>
                 <Pie
                   data={chartData}
                   dataKey='value'
                   nameKey='name'
-                  cx='50%'
-                  cy='50%'
+                  cx='72%'
+                  cy='40%'
                   innerRadius={80}
                   outerRadius={120}
                   fill='#8884d8'
