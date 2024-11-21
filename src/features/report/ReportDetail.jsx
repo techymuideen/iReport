@@ -7,8 +7,14 @@ const mockReports = [
     title: 'Flooding in the Park',
     description: 'Heavy flooding occurred due to blocked drainage.',
     recordType: 'red-flag',
-    images: ['image1.jpg', 'image2.jpg'],
-    videos: ['video1.mp4'],
+    images: [
+      'https://media.istockphoto.com/id/1497485073/photo/house-exterior-flood-disaster.webp?a=1&b=1&s=612x612&w=0&k=20&c=nDbs3_TUZAsy_lyM5c8-M_ciNdnq9G0NSh7PenUZSkQ=',
+      'https://images.unsplash.com/photo-1580974511812-4b7196fa5098?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zmxvb2R8ZW58MHx8MHx8fDA%3D',
+      'https://images.unsplash.com/photo-1600336153113-d66c79de3e91?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvb2R8ZW58MHx8MHx8fDA%3D',
+    ],
+    videos: [
+      'https://dm0qx8t0i9gc9.cloudfront.net/watermarks/video/BXJT8TRDeiymbx54w/videoblocks-flood-water-flows-across-the-road-in-a-powerful-stream-natural-disaster-flooded-streets-dirty-water-strong-currents_rwmxy89hdd__4e3e045b5e2944185b3498c4b9c7e14a__P360.mp4',
+    ],
     location: { lat: 12.9716, long: 77.5946 },
   },
   {
@@ -121,7 +127,8 @@ const ReportDetail = () => {
         </div>
 
         <div className='flex justify-end space-x-4 mt-4'>
-          <Link to={`/report/edit/${reportId}`}
+          <Link
+            to={`/report/edit/${reportId}`}
             className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
             Edit
           </Link>

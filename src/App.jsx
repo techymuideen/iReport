@@ -9,7 +9,7 @@ import ResetPassword from './pages/ResetPassword';
 import AppLayout from './ui/AppLayout';
 import AboutUs from './pages/AboutUs';
 import DashboardLayout from './ui/DashboardLayout';
-import ManageReport from './pages/ManageReport';
+import ManageReportPage from './pages/ManageReportPage';
 import Settings from './pages/Settings';
 import CreateReport from './pages/CreateReport';
 import ReportDetailPage from './pages/ReportDetailPage';
@@ -35,7 +35,7 @@ function App() {
             },
             {
               path: '/manage-report',
-              element: <ManageReport />,
+              element: <ManageReportPage />,
             },
             {
               path: '/settings',
