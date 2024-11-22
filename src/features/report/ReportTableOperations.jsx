@@ -2,7 +2,7 @@
 import Filter from '../../ui/Filter';
 function ReportTableOperations() {
   return (
-    <div className='flex items-center justify-between gap-6 '>
+    <div className='sm:flex items-center justify-between gap-6 '>
       <Filter
         filterField='type'
         options={[

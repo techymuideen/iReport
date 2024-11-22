@@ -14,6 +14,7 @@ import Settings from './pages/Settings';
 import CreateReport from './pages/CreateReport';
 import ReportDetailPage from './pages/ReportDetailPage';
 import EditReportPage from './pages/EditReportPage';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   const router = createBrowserRouter([
@@ -74,6 +75,10 @@ function App() {
           element: <AboutUs />,
         },
       ],
+    },
+    {
+      path: '*',
+      element: <PageNotFound />,
     },
   ]);
 

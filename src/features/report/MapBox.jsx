@@ -40,10 +40,12 @@ const MapBox = ({ location, setLocation }) => {
     }
   }, [location.lat, location.long, setLocation]);
 
+  console.log(import.meta.env.VITE_MAPBOX_ACCESS_TOKEN);
+
   return (
     <ReactMapGL
       ref={mapRef}
-      mapboxAccessToken='pk.eyJ1Ijoiam9uYXNzY2htZWR0bWFubiIsImEiOiJjam54ZmM5N3gwNjAzM3dtZDNxYTVlMnd2In0.ytpI7V7w7cyT1Kq5rT9Z1A'
+      mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
       initialViewState={{
         latitude: location.lat,
         longitude: location.long,

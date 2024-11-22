@@ -34,7 +34,7 @@ const AccountUpdate = () => {
   };
 
   return (
-    <div className='py-12 px-16 bg-white rounded-md'>
+    <div className='py-4 px-4 sm:py-12 sm:px-16 bg-white rounded-md'>
       <h1 className='text-2xl font-semibold mb-6 uppercase'>
         Your account settings
       </h1>

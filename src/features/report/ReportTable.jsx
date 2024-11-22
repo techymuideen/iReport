@@ -25,7 +25,7 @@ const Header = ({ children }) => {
   }
 
   return (
-    <div className='grid grid-cols-[minmax(100px,_1fr)_120px_120px] gap-6 items-center px-6 py-4 bg-gray-50  ml-2 border-b border-gray-100 uppercase  [&:not(:first-child)]:text-center text-gray-600 font-semibold'>
+    <div className='grid sm:grid-cols-[minmax(120px,_1fr)_150px_150px] grid-cols-1 gap-6 items-center px-6 py-4 bg-gray-50  ml-2 border-b border-gray-100 uppercase  [&:not(:first-child)]:text-center text-gray-600 font-semibold'>
       {children}
     </div>
   );
@@ -44,7 +44,7 @@ const Row = ({ children, id }) => {
   return (
     <Link
       to={`/report/${id}`}
-      className='grid grid-cols-[minmax(120px,_1fr)_150px_150px] px-6 sm:grid-cols-[minmax(100px,_1fr)_120px_120px] gap-6 items-center  py-2 ml-2 rounded-3xl uppercase text-gray-600 font-medium hover:bg-gray-100'>
+      className='grid sm:grid-cols-[minmax(120px,_1fr)_150px_150px] px-6 grid-cols-1 gap-6 items-center  py-2 ml-2 rounded-3xl uppercase text-gray-600 font-medium hover:bg-gray-100'>
       {children}
     </Link>
   );

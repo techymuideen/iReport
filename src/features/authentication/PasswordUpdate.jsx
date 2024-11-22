@@ -22,7 +22,7 @@ const PasswordData = () => {
   const newPassword = watch('newPassword');
 
   return (
-    <div className='py-12 px-16 bg-white rounded-md'>
+    <div className='p-4 sm:py-12 sm:px-16 bg-white rounded-md'>
       <h1 className='text-2xl font-semibold mb-6 uppercase'>Password change</h1>
       <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
         {/* Current Password Field */}

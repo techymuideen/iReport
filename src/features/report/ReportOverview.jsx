@@ -62,7 +62,7 @@ const Profile = () => {
   ];
 
   return (
-    <div className='max-w-7xl mx-auto pl-4 pt-5 pr-4 md:pr-0 md:pt-0 space-y-8'>
+    <div className='max-w-7xl mx-auto pl-4 pt-5 pr-4  md:pt-0 space-y-8'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 content-stretch'>
         {/* Profile Summary */}
         <div className='space-y-6  flex flex-col '>

@@ -75,6 +75,24 @@ const ReportDetail = () => {
           </span>
         </p>
 
+        <p className='text-gray-500 mb-2'>
+          <strong>Status:</strong>{' '}
+          <span
+            className={`px-2 py-1 rounded ${
+              report.status === 'resolved'
+                ? 'bg-[#0088FE] text-white'
+                : report.status === 'draft' || report.status === 'investigation'
+                ? 'bg-[#FFBB28] text-white'
+                : 'bg-[#FF8042] text-white'
+            }`}>
+            {report.status === 'resolved'
+              ? 'Resolved'
+              : report.status === 'investigation'
+              ? 'Investigation'
+              : 'Rejected'}
+          </span>
+        </p>
+
         <div className='mb-4'>
           <strong>Images:</strong>
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2'>

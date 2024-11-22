@@ -6,8 +6,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 const GeoCoder = ({ setLocation }) => {
   const ctrl = new MapBoxGeocoder({
-    accessToken:
-      'pk.eyJ1Ijoiam9uYXNzY2htZWR0bWFubiIsImEiOiJjam54ZmM5N3gwNjAzM3dtZDNxYTVlMnd2In0.ytpI7V7w7cyT1Kq5rT9Z1A',
+    accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     marker: false,
     collapsed: true,
   });

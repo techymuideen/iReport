@@ -49,8 +49,8 @@ const ManageReport = () => {
       <Table>
         <Table.Header>
           <span>Name</span>
-          <span className='text-center'>Type</span>
-          <span className='text-center'>Status</span>
+          <span className='text-center sm:inline hidden'>Type</span>
+          <span className='text-center sm:inline hidden'>Status</span>
         </Table.Header>
         <Table.Body
           data={reportData}
@@ -58,7 +58,7 @@ const ManageReport = () => {
             <Table.Row id={item.id} key={item.id}>
               <span>{item.description}</span>
               <span
-                className={`px-2 py-2 rounded-full text-center ${
+                className={`px-2 py-2 rounded-full sm:inline hidden text-center ${
                   item.type === 'red-flag'
                     ? 'bg-red-500 text-white'
                     : 'bg-green-500 text-white'
@@ -66,7 +66,7 @@ const ManageReport = () => {
                 {item.type}
               </span>
               <span
-                className={`px-2 text-center py-2 rounded-full  ${
+                className={`px-2 text-center py-2 sm:inline hidden rounded-full  ${
                   item.status === 'resolved'
                     ? 'bg-[#0088FE] text-white'
                     : item.status === 'draft' || item.status === 'investigation'
