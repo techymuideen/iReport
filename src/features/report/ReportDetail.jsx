@@ -1,5 +1,8 @@
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import MapBox from '../report/MapBox';
+import Button from '../../ui/Button';
+import Modal from '../../ui/Modal';
+import ConfirmDelete from '../../ui/ConfirmDelete';
 
 const mockReports = [
   {
@@ -74,14 +77,14 @@ const ReportDetail = () => {
 
         <div className='mb-4'>
           <strong>Images:</strong>
-          <div className='grid grid-cols-3 gap-4 mt-2'>
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2'>
             {report.images.length > 0 ? (
               report.images.map((img, index) => (
                 <img
                   key={index}
                   src={img}
                   alt={`Report Image ${index + 1}`}
-                  className='w-full h-32 object-cover rounded'
+                  className='w-full h-40 object-cover rounded'
                 />
               ))
             ) : (
@@ -95,7 +98,7 @@ const ReportDetail = () => {
           <div className='mt-2'>
             {report.videos.length > 0 ? (
               report.videos.map((video, index) => (
-                <video key={index} controls className='w-full h-40 rounded'>
+                <video key={index} controls className='w-full h-auto rounded'>
                   <source src={video} type='video/mp4' />
                   Your browser does not support the video tag.
                 </video>
@@ -127,16 +130,26 @@ const ReportDetail = () => {
         </div>
 
         <div className='flex justify-end space-x-4 mt-4'>
-          <Link
-            to={`/report/edit/${reportId}`}
-            className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
-            Edit
-          </Link>
-          <button
-            className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600'
-            onClick={handleDelete}>
-            Delete
-          </button>
+          <Modal>
+            {/* <Button variation='resolve'>Resolve</Button>
+            <Button variation='investigate'>Investigate</Button>
+            <Button variation='reject'>Reject</Button> */}
+            <Button onClick={() => navigate(`/report/edit/${reportId}`)}>
+              Edit
+            </Button>
+            <Modal.Open opens='delete'>
+              <Button variation='danger' onClick={handleDelete}>
+                Delete
+              </Button>
+            </Modal.Open>
+            <Modal.Window name='delete'>
+              <ConfirmDelete
+                resourceName='report'
+                disabled={false}
+                onConfirm={() => alert('deleted Successfully')}
+              />
+            </Modal.Window>
+          </Modal>
         </div>
       </div>
     </div>
