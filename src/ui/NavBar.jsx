@@ -4,16 +4,30 @@ import { RxDashboard } from 'react-icons/rx';
 import { LuFolderEdit } from 'react-icons/lu';
 
 import NavItem from './NavItem';
+import AppContext from '../context/AppContext';
+import { useContext } from 'react';
 
 const NavBar = () => {
+  const { showNavMobile, setShowNavMobile } = useContext(AppContext);
+
+  const handleChange = () => {
+    // Check if screen width is less than the 'md' breakpoint
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      setShowNavMobile(prev => !prev);
+    }
+  };
+
   return (
-    <aside className='bg-sky-600 w-full md:w-64  md:min-h-full  py-12  flex-shrink-0'>
+    <aside
+      className={`bg-slate-700 ${
+        showNavMobile ? 'block' : 'hidden md:inline'
+      }  w-full md:w-[fit-content]  md:min-h-full  py-4 sm:py-12  flex-shrink-0`}>
       <nav>
-        <ul className='space-y-1'>
+        <ul onClick={handleChange} className='space-y-1'>
           <NavItem to='/' text='Overview'>
             <RxDashboard size={20} />
           </NavItem>
-          <NavItem to='/create-report' text='Create Report'>
+          <NavItem to='/report/create' text='Create Report'>
             <MdOutlineCreateNewFolder size={20} />
           </NavItem>
           <NavItem to='/manage-report' text='Manage Report'>

@@ -40,21 +40,24 @@ const MapBox = ({ location, setLocation }) => {
     }
   }, [location.lat, location.long, setLocation]);
 
+  console.log(import.meta.env.VITE_MAPBOX_ACCESS_TOKEN);
+
   return (
     <ReactMapGL
       ref={mapRef}
-      mapboxAccessToken='pk.eyJ1Ijoiam9uYXNzY2htZWR0bWFubiIsImEiOiJjam54ZmM5N3gwNjAzM3dtZDNxYTVlMnd2In0.ytpI7V7w7cyT1Kq5rT9Z1A'
+      mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
       initialViewState={{
         latitude: location.lat,
         longitude: location.long,
-        zoom: location.zoom,
+        zoom: 8,
       }}
+      interactive={Boolean(setLocation)}
       style={{ height: 400, width: '100%' }}
       mapStyle='mapbox://styles/mapbox/streets-v11'
       scrollZoom={location.scrollZoom}
       onClick={handleViewChange}>
       <Marker
-        draggable
+        draggable={Boolean(setLocation)}
         onDragEnd={handleViewChange}
         latitude={location.lat}
         longitude={location.long}
@@ -63,19 +66,21 @@ const MapBox = ({ location, setLocation }) => {
           <FaLocationDot size={20} fill='red' />
         </div>
       </Marker>
-      <NavigationControl position='bottom-right' />
-      <GeolocateControl
-        position='top-left'
-        trackUserLocation
-        onGeolocate={e =>
-          setLocation(prevLocation => ({
-            ...prevLocation,
-            lat: e.coords.latitude,
-            long: e.coords.longitude,
-          }))
-        }
-      />
-      <GeoCoder setLocation={setLocation} />
+      {Boolean(setLocation) && <NavigationControl position='bottom-right' />}
+      {Boolean(setLocation) && (
+        <GeolocateControl
+          position='top-left'
+          trackUserLocation
+          onGeolocate={e =>
+            setLocation(prevLocation => ({
+              ...prevLocation,
+              lat: e.coords.latitude,
+              long: e.coords.longitude,
+            }))
+          }
+        />
+      )}
+      {Boolean(setLocation) && <GeoCoder setLocation={setLocation} />}
     </ReactMapGL>
   );
 };
@@ -87,7 +92,7 @@ MapBox.propTypes = {
     zoom: PropTypes.number,
     scrollZoom: PropTypes.bool,
   }).isRequired,
-  setLocation: PropTypes.func.isRequired,
+  setLocation: PropTypes.func,
 };
 
 export default MapBox;

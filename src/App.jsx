@@ -9,9 +9,12 @@ import ResetPassword from './pages/ResetPassword';
 import AppLayout from './ui/AppLayout';
 import AboutUs from './pages/AboutUs';
 import DashboardLayout from './ui/DashboardLayout';
-import ManageReport from './pages/ManageReport';
+import ManageReportPage from './pages/ManageReportPage';
 import Settings from './pages/Settings';
-import CreateReport from './pages/CreateReport'
+import CreateReport from './pages/CreateReport';
+import ReportDetailPage from './pages/ReportDetailPage';
+import EditReportPage from './pages/EditReportPage';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   const router = createBrowserRouter([
@@ -28,17 +31,22 @@ function App() {
               element: <Overview />,
             },
             {
-              path: 'create-report',
+              path: '/report/create',
               element: <CreateReport />,
             },
             {
               path: '/manage-report',
-              element: <ManageReport />,
+              element: <ManageReportPage />,
             },
             {
               path: '/settings',
               element: <Settings />,
             },
+            {
+              path: 'report/:reportId',
+              element: <ReportDetailPage />,
+            },
+            { path: 'report/edit/:reportId', element: <EditReportPage /> },
           ],
         },
         {
@@ -67,6 +75,10 @@ function App() {
           element: <AboutUs />,
         },
       ],
+    },
+    {
+      path: '*',
+      element: <PageNotFound />,
     },
   ]);
 
