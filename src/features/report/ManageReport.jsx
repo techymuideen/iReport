@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
-import Button from '../../ui/Button';
+import Pagination from '../../ui/Pagination';
 import Table from './ReportTable';
 
 // Sample data for red-flag records
-const redFlagData = [
+const reportData = [
   {
     id: 1,
     status: 'resolved',
@@ -43,8 +42,6 @@ const redFlagData = [
 ];
 
 const ManageReport = () => {
-  const navigate = useNavigate();
-
   return (
     <Table>
       <Table.Header>
@@ -53,7 +50,7 @@ const ManageReport = () => {
         <span className='text-center'>Status</span>
       </Table.Header>
       <Table.Body
-        data={redFlagData}
+        data={reportData}
         render={item => (
           <Table.Row id={item.id} key={item.id}>
             <span>{item.description}</span>
@@ -79,7 +76,7 @@ const ManageReport = () => {
         )}
       />
       <Table.Footer>
-        <Button onClick={() => navigate('/manage-report')}>See All</Button>
+        <Pagination count={100} />
       </Table.Footer>
     </Table>
   );
