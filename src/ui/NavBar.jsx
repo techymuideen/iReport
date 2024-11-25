@@ -33,7 +33,7 @@ const NavBar = () => {
           <NavItem to='/manage-report' text='Manage Report'>
             <LuFolderEdit size={20} />
           </NavItem>
-          <NavItem to='/settings' text='Settings'>
+          <NavItem to='/profile' text='Profile'>
             <CiSettings size={20} />
           </NavItem>
         </ul>

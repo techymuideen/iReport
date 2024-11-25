@@ -39,7 +39,7 @@ function App() {
               element: <ManageReportPage />,
             },
             {
-              path: '/settings',
+              path: '/profile',
               element: <Settings />,
             },
             {

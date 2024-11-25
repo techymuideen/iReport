@@ -8,8 +8,8 @@ const NavItem = props => {
         to={props.to}
         className={({ isActive }) =>
           isActive
-            ? 'flex gap-3 items-center text-xl px-4 py-2 font-normal uppercase  text-white hover:text-gray-200 hover:bg-slate-500 transition-all bg-slate-500'
-            : 'flex gap-3 items-center text-xl px-4 py-2 font-normal uppercase text-white  hover:text-gray-200 hover:bg-slate-500 transition-all '
+            ? 'flex gap-3 items-center text-base px-4 py-2 font-normal   text-white hover:text-gray-200 hover:bg-slate-500 transition-all bg-slate-500'
+            : 'flex gap-3 items-center text-base px-4 py-2 font-normal  text-white  hover:text-gray-200 hover:bg-slate-500 transition-all '
         }>
         <span>{props.children}</span>
         <span>{props.text}</span>
