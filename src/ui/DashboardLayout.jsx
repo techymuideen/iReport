@@ -4,11 +4,11 @@ import NavBar from './NavBar';
 
 const DashboardLayout = () => {
   return (
-    <div className='flex flex-col md:flex-row max-w-6xl mx-auto justify-stretch shadow-md'>
+    <div className="mx-auto flex max-w-6xl flex-col justify-stretch shadow-md md:flex-row">
       {/* Sidebar */}
       <NavBar />
       {/* Main Content */}
-      <div className='flex-1 '>
+      <div className="flex-1">
         <Outlet />
       </div>
     </div>

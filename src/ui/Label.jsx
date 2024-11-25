@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 
-const Label = props => {
+const Label = (props) => {
   return (
     <label
       htmlFor={props.id}
       className={`${
         props.type === 'primary' ? 'text-black' : 'text-red-500'
-      }  text-base`}>
+      } text-base`}
+    >
       {props.children}
     </label>
   );

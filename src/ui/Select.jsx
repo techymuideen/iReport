@@ -5,9 +5,10 @@ function Select({ options, value, onChange, ...props }) {
     <select
       value={value}
       onChange={onChange}
-      className='font-medium text-sm py-3 px-6 border shadow-sm border-gray-200  rounded focus:outline-none focus:ring-2 focus:ring-opacity-50'
-      {...props}>
-      {options.map(option => (
+      className="rounded border border-gray-200 px-6 py-3 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-opacity-50"
+      {...props}
+    >
+      {options.map((option) => (
         <option value={option.value} key={option.value}>
           {option.label}
         </option>

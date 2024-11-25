@@ -13,18 +13,18 @@ function Filter({ filterField, options }) {
   }
 
   return (
-    <div className='border border-gray-100 bg-gray-50 shadow-sm rounded-sm p-1 flex gap-1'>
-      {options.map(option => (
+    <div className="flex gap-1 rounded-sm border border-gray-100 bg-gray-50 p-1 shadow-sm">
+      {options.map((option) => (
         <button
           key={option.value}
           onClick={() => handleClick(option.value)}
           disabled={option.value === currentFilter}
-          className={`rounded-sm font-medium text-sm px-3 py-[0.44rem] transition 
-            ${
-              option.value === currentFilter
-                ? 'bg-gray-800 text-white cursor-not-allowed'
-                : ''
-            }`}>
+          className={`rounded-sm px-3 py-[0.44rem] text-sm font-medium transition ${
+            option.value === currentFilter
+              ? 'cursor-not-allowed bg-gray-800 text-white'
+              : ''
+          }`}
+        >
           {option.label}
         </button>
       ))}
