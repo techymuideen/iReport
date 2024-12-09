@@ -29,7 +29,7 @@ PasswordInput.displayName = 'PasswordInput';
 
 PasswordInput.propTypes = {
   placeholder: PropTypes.string,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
 };
 
 export default PasswordInput;

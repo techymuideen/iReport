@@ -1,10 +1,17 @@
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router';
+import { useResetPassword } from '../features/authentication/useResetPassword';
 
 import Password from '../ui/Password';
 import Button from '../ui/Button';
 import Label from '../ui/Label';
+import { Link } from 'react-router-dom';
+import MiniSpinner from '../ui/MiniSpinner';
 
 const ResetPassword = () => {
+  let { token } = useParams();
+
+  const { isLoading, resetPassword } = useResetPassword();
   const {
     register,
     handleSubmit,
@@ -14,17 +21,20 @@ const ResetPassword = () => {
 
   const passwordValue = watch('password', '');
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = ({ password, passwordConfirm }) => {
+    resetPassword({ password, passwordConfirm, token });
+  };
 
   return (
-    <div className=' w-full px-5 py-12  min-h-[calc(100vh-4rem)] flex justify-center items-center'>
+    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center px-5 py-12">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='bg-white max-w-[30rem] flex-1 rounded-md font-semibold flex flex-col py-8 px-4 sm:px-6 gap-4 items-center'>
-        <h2 className='text-2xl'>Reset Password</h2>
-        <div className='w-full'>
+        className="flex max-w-[30rem] flex-1 flex-col items-center gap-4 rounded-md bg-white px-4 py-8 font-semibold sm:px-6"
+      >
+        <h2 className="text-2xl">Reset Password</h2>
+        <div className="w-full">
           <Password
-            placeholder='Password'
+            placeholder="Password"
             {...register('password', {
               required: 'Password is required',
               minLength: {
@@ -35,21 +45,27 @@ const ResetPassword = () => {
           />
           {errors.password && <Label>{errors.password.message}</Label>}
         </div>
-        <div className='w-full'>
+        <div className="w-full">
           <Password
-            placeholder='Confirm Password'
-            {...register('confirmPassword', {
+            placeholder="Confirm Password"
+            {...register('passwordConfirm', {
               required: 'Confirm Password is required',
-              validate: value =>
+              validate: (value) =>
                 value === passwordValue || 'Passwords do not match', // Custom validation to check if passwords match
             })}
           />
-          {errors.confirmPassword && (
-            <Label>{errors.confirmPassword.message}</Label>
+          {errors.passwordConfirm && (
+            <Label>{errors.passwordConfirm.message}</Label>
           )}
         </div>
 
-        <Button type='submit'>Confirm</Button>
+        <Button type="submit">{isLoading ? <MiniSpinner /> : 'Confirm'}</Button>
+        <p className="font-light text-slate-400">
+          Already have an account?{' '}
+          <span className="text-sky-600">
+            <Link to="/login">Login</Link>
+          </span>
+        </p>
       </form>
     </div>
   );

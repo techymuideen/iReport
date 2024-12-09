@@ -20,7 +20,7 @@ const Button = (props) => {
 
 Button.propTypes = {
   variation: PropTypes.string,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.any,
   className: PropTypes.string,
   type: PropTypes.string,
   onClick: PropTypes.func,
