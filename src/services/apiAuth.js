@@ -144,7 +144,7 @@ export const updateCurrentUser = async (payload) => {
 };
 
 export const updatePassword = async ({
-  currentPassword,
+  passwordCurrent,
   password,
   passwordConfirm,
 }) => {
@@ -152,10 +152,10 @@ export const updatePassword = async ({
 
   if (!token) return null;
 
-  const { data, error } = await axios.patch(
-    `${import.meta.env.VITE_API_URL}/users/updateme`,
+  const { data, error } = await axios.post(
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/users/updatepassword`,
     {
-      currentPassword,
+      passwordCurrent,
       password,
       passwordConfirm,
     },
