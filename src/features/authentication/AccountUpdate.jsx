@@ -1,149 +1,182 @@
 import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { useUpdateCurrentUser } from './useUpdateAccount';
+import { FiPlusCircle } from 'react-icons/fi';
+import { useUser } from './useUser';
+import { useDropzone } from 'react-dropzone';
+
 import Button from '../../ui/Button';
 import Input from '../../ui/Input';
 import Label from '../../ui/Label';
-import Profile from '../../../public/img/user-18.jpg';
+import MiniSpinner from '../../ui/MiniSpinner';
+import AccountUpdateSkeleton from './AccountUpdateSkeleton';
 
 const AccountUpdate = () => {
-  const data = {
-    firstname: 'muideen',
-    lastname: 'Olasunkanmi',
-    othername: 'Femi',
-    username: 'techymui',
-    email: 'techymuideen@gmail.com',
-    phoneNumber: '08036216292',
-    profileImage: Profile,
-  };
+  const { isLoading, user } = useUser();
+  const [imagePreview, setImagePreview] = useState(user?.photo || '');
+  const { isPending, updateCurrentUser } = useUpdateCurrentUser();
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: data,
+  } = useForm();
+
+  useEffect(() => {
+    reset({
+      firstname: user?.firstname || '',
+      lastname: user?.lastname || '',
+      othernames: user?.othernames || '',
+      username: user?.username || '',
+      email: user?.email || '',
+      phoneNumber: user?.phoneNumber || '',
+    });
+    setImagePreview(user?.photo || '');
+  }, [user, reset]);
+
+  const onDrop = (acceptedFiles) => {
+    if (acceptedFiles.length > 0) {
+      const file = acceptedFiles[0];
+      setUploadedFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.png'],
+    },
+    maxFiles: 1,
   });
 
-  const onSubmit = formData => {
-    console.log('Submitted Data:', formData);
+  const onSubmit = (formData) => {
+    const payload = new FormData();
 
-    const imageFile = formData.profileImage?.[0];
-    if (imageFile) {
-      console.log('Profile Image:', imageFile);
+    // Append form fields
+    Object.entries(formData).forEach(([key, value]) => {
+      payload.append(key, value);
+    });
+
+    console.log(uploadedFile);
+
+    // Append file if available
+    if (uploadedFile) {
+      payload.append('photo', uploadedFile);
     }
-    // Add logic to save/update the account details
+
+    updateCurrentUser(payload);
   };
 
   return (
-    <div className='py-4 px-4 sm:py-12 sm:px-16 bg-white rounded-md'>
-      <h1 className='text-2xl font-semibold mb-6 uppercase'>
+    <div className="rounded-md bg-white px-4 py-4 sm:px-16 sm:py-12">
+      <h1 className="mb-6 text-2xl font-semibold uppercase">
         Your account settings
       </h1>
-      <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
-        <div className='flex flex-col items-center'>
-          <div className='shrink-0'>
-            <img
-              className='h-16 w-16 object-cover rounded-full'
-              src={Profile}
-              alt='Current profile photo'
-            />
+      {isLoading && <AccountUpdateSkeleton />}
+      {!isLoading && (
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+          {/* Profile Photo Section */}
+          <div className="flex flex-col items-center">
+            <div
+              {...getRootProps({
+                className: 'mt-4 border-dashed border-2 border-gray-300 p-4',
+              })}
+              className={`mt-4 cursor-pointer p-4 text-center ${isDragActive ? 'bg-gray-200' : ''}`}
+            >
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p>Drop the files here ...</p>
+              ) : (
+                <div className="flex shrink-0 items-end justify-end">
+                  <img
+                    className="h-16 w-16 rounded-full object-cover"
+                    src={imagePreview}
+                    alt="Profile Preview"
+                  />
+                  <span className="">
+                    <FiPlusCircle size={20} />
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
-          <label className='block'>
-            <span className='sr-only'>Choose profile photo</span>
-            <input
-              type='file'
-              accept='image/*'
-              className='block w-full text-sm text-slate-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-violet-50 file:text-violet-700
-                hover:file:bg-violet-100'
-              {...register('profileImage')}
+
+          {/* Form Fields */}
+          <div>
+            <Label type="primary" id="username">
+              Username
+            </Label>
+            <Input
+              type="text"
+              id="username"
+              {...register('username', { required: 'Username is required' })}
             />
-          </label>
-        </div>
+            {errors.username && (
+              <p className="text-sm text-red-500">{errors.username.message}</p>
+            )}
+          </div>
 
-        <div>
-          <Label type='primary' id='username'>
-            Username
-          </Label>
-          <Input
-            type='text'
-            id='username'
-            {...register('username', { required: 'Username is required' })}
-          />
-          {errors.username && (
-            <p className='text-red-500 text-sm'>{errors.username.message}</p>
-          )}
-        </div>
+          <div>
+            <Label type="primary" id="firstname">
+              First Name
+            </Label>
+            <Input
+              type="text"
+              id="firstname"
+              {...register('firstname', { required: 'First name is required' })}
+            />
+            {errors.firstname && (
+              <p className="text-sm text-red-500">{errors.firstname.message}</p>
+            )}
+          </div>
 
-        <div>
-          <Label type='primary' id='firstname'>
-            First Name
-          </Label>
-          <Input
-            type='text'
-            id='firstname'
-            {...register('firstname', { required: 'First name is required' })}
-          />
-          {errors.firstname && (
-            <p className='text-red-500 text-sm'>{errors.firstname.message}</p>
-          )}
-        </div>
+          <div>
+            <Label type="primary" id="lastname">
+              Last Name
+            </Label>
+            <Input
+              type="text"
+              id="lastname"
+              {...register('lastname', { required: 'Last name is required' })}
+            />
+            {errors.lastname && (
+              <p className="text-sm text-red-500">{errors.lastname.message}</p>
+            )}
+          </div>
 
-        <div>
-          <Label type='primary' id='lastname'>
-            Last Name
-          </Label>
-          <Input
-            type='text'
-            id='lastname'
-            {...register('lastname', { required: 'Last name is required' })}
-          />
-          {errors.lastname && (
-            <p className='text-red-500 text-sm'>{errors.lastname.message}</p>
-          )}
-        </div>
+          <div>
+            <Label type="primary" id="othername">
+              Other Name
+            </Label>
+            <Input type="text" id="othername" {...register('othernames')} />
+          </div>
 
-        <div>
-          <Label type='primary' id='othername'>
-            Other Name
-          </Label>
-          <Input type='text' id='othername' {...register('othername')} />
-        </div>
+          <div>
+            <Label type="primary" id="phoneNumber">
+              Phone Number
+            </Label>
+            <Input
+              type="number"
+              id="phoneNumber"
+              {...register('phoneNumber', {
+                required: 'Phone number is required',
+              })}
+            />
+            {errors.phoneNumber && (
+              <p className="text-sm text-red-500">
+                {errors.phoneNumber.message}
+              </p>
+            )}
+          </div>
 
-        <div>
-          <Label type='primary' id='email'>
-            Email
-          </Label>
-          <Input
-            type='email'
-            id='email'
-            {...register('email', { required: 'Email is required' })}
-          />
-          {errors.email && (
-            <p className='text-red-500 text-sm'>{errors.email.message}</p>
-          )}
-        </div>
-
-        <div>
-          <Label type='primary' id='phoneNumber'>
-            Phone Number
-          </Label>
-          <Input
-            type='number'
-            id='phoneNumber'
-            {...register('phoneNumber', {
-              required: 'Phone number is required',
-            })}
-          />
-          {errors.phoneNumber && (
-            <p className='text-red-500 text-sm'>{errors.phoneNumber.message}</p>
-          )}
-        </div>
-
-        <Button type='submit'>Save Settings</Button>
-      </form>
+          <Button type="submit">
+            {isPending ? <MiniSpinner /> : 'Save Settings'}
+          </Button>
+        </form>
+      )}
     </div>
   );
 };
