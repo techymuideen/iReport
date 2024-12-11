@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true; // Include cookies with requests
 
 export const signup = async ({ email, password, passwordConfirm }) => {
   const { data, error } = await axios.post(
-    `${import.meta.env.VITE_API_URL}/api/v1/users/signup`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/signup`,
     {
       email,
       password,
@@ -13,6 +13,16 @@ export const signup = async ({ email, password, passwordConfirm }) => {
     {
       withCridentials: 'include',
     },
+  );
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};
+
+export const googleAuth = async (code) => {
+  const { data, error } = await axios.get(
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/google?code=${code}`,
   );
 
   if (error) throw new Error(error.message);
@@ -29,7 +39,7 @@ export const completeSignup = async ({
   username,
 }) => {
   const { data, error } = await axios.post(
-    `${import.meta.env.VITE_API_URL}/api/v1/users/complete-signup/${token}`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/complete-signup/${token}`,
     {
       firstname,
       lastname,
@@ -49,7 +59,7 @@ export const completeSignup = async ({
 
 export const login = async ({ email, password }) => {
   const { data, error } = await axios.post(
-    `${import.meta.env.VITE_API_URL}/api/v1/users/login/`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/login`,
     {
       email: email,
       password: password,
@@ -67,7 +77,7 @@ export const login = async ({ email, password }) => {
 export const getCurrentUser = async () => {
   const token = localStorage.getItem('token');
   const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/v1/users/me`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/users/me`,
 
     {
       headers: {
@@ -85,7 +95,7 @@ export const logout = async () => {
   if (!token) return null;
 
   const { error } = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/v1/users/logout`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/logout`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -98,7 +108,7 @@ export const logout = async () => {
 
 export const forgetPassword = async ({ email }) => {
   const { data, error } = await axios.post(
-    `${import.meta.env.VITE_API_URL}/api/v1/users/forgotpassword`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/forgotpassword`,
     {
       email,
     },
@@ -111,7 +121,7 @@ export const forgetPassword = async ({ email }) => {
 
 export const resetPassword = async ({ password, passwordConfirm, token }) => {
   const { data, error } = await axios.post(
-    `${import.meta.env.VITE_API_URL}/api/v1/users/resetpassword/${token}`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/resetpassword/${token}`,
     {
       password,
       passwordConfirm,
@@ -153,7 +163,7 @@ export const updatePassword = async ({
   if (!token) return null;
 
   const { data, error } = await axios.post(
-    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/users/updatepassword`,
+    `${import.meta.env.VITE_API_URL_LOCAL}/api/v1/auth/updatepassword`,
     {
       passwordCurrent,
       password,

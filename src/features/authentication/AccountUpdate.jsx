@@ -10,9 +10,10 @@ import Input from '../../ui/Input';
 import Label from '../../ui/Label';
 import MiniSpinner from '../../ui/MiniSpinner';
 import AccountUpdateSkeleton from './AccountUpdateSkeleton';
+import toast from 'react-hot-toast';
 
 const AccountUpdate = () => {
-  const { isLoading, user } = useUser();
+  const { isLoading, user, error } = useUser();
   const [imagePreview, setImagePreview] = useState(user?.photo || '');
   const { isPending, updateCurrentUser } = useUpdateCurrentUser();
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -69,6 +70,11 @@ const AccountUpdate = () => {
 
     updateCurrentUser(payload);
   };
+
+  if (error) {
+    toast.remove();
+    toast.error(error.response.data.message);
+  }
 
   return (
     <div className="rounded-md bg-white px-4 py-4 sm:px-16 sm:py-12">

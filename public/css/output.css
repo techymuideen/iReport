@@ -811,6 +811,10 @@ video {
   min-height: 100vh;
 }
 
+.min-h-\[10rem\] {
+  min-height: 10rem;
+}
+
 .w-12 {
   width: 3rem;
 }
@@ -1279,6 +1283,10 @@ video {
 
 .p-6 {
   padding: 1.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
 }
 
 .px-2 {

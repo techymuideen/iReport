@@ -4,9 +4,12 @@ import Password from '../../ui/Password';
 import Label from '../../ui/Label';
 import Button from '../../ui/Button';
 import MiniSpinner from '../../ui/MiniSpinner';
+import { useUser } from './useUser';
 
 const PasswordData = () => {
   const { updatePassword, isLoading } = useUpdatePassword();
+  const { user } = useUser();
+  const showPassword = user?.signupMethod === 'email';
   const {
     register, // Register inputs
     handleSubmit, // Handle form submission
@@ -24,6 +27,8 @@ const PasswordData = () => {
 
   // Watch the password and passwordConfirm fields to validate they match
   const password = watch('password');
+
+  if (!showPassword) return null;
 
   return (
     <div className="rounded-md bg-white p-4 sm:px-16 sm:py-12">

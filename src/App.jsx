@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import Overview from './pages/Overview';
 import Signup from './pages/Signup';
@@ -18,6 +19,7 @@ import CreateReport from './pages/CreateReport';
 import ReportDetailPage from './pages/ReportDetailPage';
 import EditReportPage from './pages/EditReportPage';
 import PageNotFound from './pages/PageNotFound';
+import ProtectedRoutes from './ui/ProtectedRoutes';
 
 function App() {
   const queryClient = new QueryClient({
@@ -35,7 +37,11 @@ function App() {
       children: [
         {
           path: '/',
-          element: <DashboardLayout />,
+          element: (
+            <ProtectedRoutes>
+              <DashboardLayout />
+            </ProtectedRoutes>
+          ),
           children: [
             {
               path: '/',
@@ -94,30 +100,32 @@ function App() {
   ]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router} />;
-      <Toaster
-        position="top-center"
-        gutter={12}
-        containerStyle={{ margin: '8px' }}
-        toastOptions={{
-          success: {
-            duration: 3000,
-          },
-          error: {
-            duration: 5000,
-          },
-          style: {
-            fontSize: '16px',
-            maxWidth: '500px',
-            padding: '16px 24px',
-            backgroundColor: 'var(--color-grey-0',
-            color: 'var(--color-grey-700',
-          },
-        }}
-      />
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <RouterProvider router={router} />;
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: '8px' }}
+          toastOptions={{
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 5000,
+            },
+            style: {
+              fontSize: '16px',
+              maxWidth: '500px',
+              padding: '16px 24px',
+              backgroundColor: 'var(--color-grey-0',
+              color: 'var(--color-grey-700',
+            },
+          }}
+        />
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }
 
