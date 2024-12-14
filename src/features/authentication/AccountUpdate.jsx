@@ -61,8 +61,6 @@ const AccountUpdate = () => {
       payload.append(key, value);
     });
 
-    console.log(uploadedFile);
-
     // Append file if available
     if (uploadedFile) {
       payload.append('photo', uploadedFile);

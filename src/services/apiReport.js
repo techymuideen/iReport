@@ -38,7 +38,6 @@ export const getAllReport = async ({ page, filter1, filter2 }) => {
 
   if (error) throw new Error(error.message);
 
-  console.log(data);
   return { data: data.data.reports, count: data.data.count };
 };
 

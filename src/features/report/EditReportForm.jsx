@@ -18,7 +18,11 @@ const EditReport = () => {
   const { updateReport, isPending } = useUpdateReport();
   const [recordType, setRecordType] = useState(report?.type);
   const [images, setImages] = useState(report?.images || []);
+  const [existingImages, setExistingImages] = useState(report?.images || []);
+  const [newImages, setNewImages] = useState([]);
   const [videos, setVideos] = useState(report?.videos || []);
+  const [existingVideos, setExistingVideos] = useState(report?.videos || []);
+  const [newVideos, setNewVideos] = useState([]);
   const [location, setLocation] = useState(
     report?.location || { lat: null, long: null },
   );
@@ -43,6 +47,8 @@ const EditReport = () => {
     setRecordType(report?.type);
     setImages(report?.images || []);
     setVideos(report?.videos || []);
+    setExistingImages(report?.images || []);
+    setExistingVideos(report?.videos || []);
     if (report?.location) {
       try {
         const parsedLocation = JSON.parse(report?.location);
@@ -70,12 +76,18 @@ const EditReport = () => {
       payload.append('location', JSON.stringify(location));
     }
 
-    if (images) {
-      payload.append('images', images);
-    }
+    payload.append('existingImages', JSON.stringify(existingImages));
+
+    newImages.forEach((image) => {
+      payload.append('images', image); // Appends each file as binary
+    });
+
+    payload.append('existingVideos', JSON.stringify(existingVideos));
 
     if (videos) {
-      payload.append('videos', videos);
+      newVideos.forEach((video) => {
+        payload.append('videos', video); // Appends each file as binary
+      });
     }
 
     console.log(location);
@@ -150,11 +162,17 @@ const EditReport = () => {
           images={images}
           setImages={setImages}
           setImageError={setImageError}
+          newImages={newImages}
+          setNewImages={setNewImages}
+          existingImages={existingImages}
+          setExistingImages={setExistingImages}
         />
         {imageError && <span className="text-red-500">{imageError}</span>}
         <SelectVideo
           videos={videos}
           setVideos={setVideos}
+          newVideos={newVideos}
+          setNewVideos={setNewVideos}
           setVideoError={setVideoError}
         />
         {videoError && <span className="text-red-500">{videoError}</span>}

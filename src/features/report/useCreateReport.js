@@ -9,7 +9,7 @@ export const useCreateReport = () => {
     mutationFn: (data) => createReportApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries('reports');
-      toast('Report created successfully');
+      toast.success('Report created successfully');
     },
     onError: (error) => {
       toast.error(error.message);

@@ -8,7 +8,6 @@ export const useUpdateCurrentUser = () => {
   const { mutate: updateCurrentUser, isPending } = useMutation({
     mutationFn: (payload) => updateCurrentUserApi(payload),
     onSuccess: (response) => {
-      console.log(response);
       queryClient.setQueryData(['user'], response.data.user);
     },
     onError: (error) => {

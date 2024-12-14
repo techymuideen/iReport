@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import SelectVideo from './SelectVideo';
 import SelectImage from './SelectImage';
@@ -7,12 +7,10 @@ import SelectLocation from './SelectLocation';
 import Button from '../../ui/Button';
 import MapBox from './MapBox';
 import { useCreateReport } from './useCreateReport';
-import { useUpdateReport } from '../../features/report/useUpdateReport';
 import MiniSpinner from '../../ui/MiniSpinner';
 
 const ReportForm = ({ initialData, title }) => {
   const { createReport, isLoading } = useCreateReport();
-  const { updateReport, isPending } = useUpdateReport();
   const [recordType, setRecordType] = useState(
     initialData.recordType || 'red-flag',
   );
@@ -29,18 +27,7 @@ const ReportForm = ({ initialData, title }) => {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
-  } = useForm({
-    defaultValues: {
-      title: initialData.title || '',
-      description: initialData.description || '',
-    },
-  });
-
-  useEffect(() => {
-    setValue('title', initialData.title);
-    setValue('description', initialData.description);
-  }, [initialData, setValue]);
+  } = useForm();
 
   const onSubmit = (formData) => {
     const payload = new FormData();
@@ -57,16 +44,17 @@ const ReportForm = ({ initialData, title }) => {
     }
 
     if (images) {
-      payload.append('images', images);
+      images.forEach((image) => {
+        payload.append('images', image); // Appends each file as binary
+      });
     }
 
     if (videos) {
-      payload.append('videos', videos);
+      videos.forEach((video) => {
+        payload.append('videos', video); // Appends each file as binary
+      });
     }
 
-    if (initialData.id) {
-      updateReport(initialData.id, payload);
-    }
     createReport(payload, {
       onSuccess: () => reset(),
     });
@@ -153,7 +141,7 @@ const ReportForm = ({ initialData, title }) => {
         </div>
         {/* Submit Button */}
         <Button type="submit">
-          {isLoading || isPending ? <MiniSpinner /> : 'Submit Report'}
+          {isLoading ? <MiniSpinner /> : 'Submit Report'}
         </Button>
       </form>
     </div>
