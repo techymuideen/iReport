@@ -11,7 +11,11 @@ export const useLogin = () => {
     mutationFn: ({ email, password }) => loginApi({ email, password }),
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
+
+      // Directly update the user query data
       queryClient.setQueryData(['user'], data.data.user);
+
+      toast.success('Login successful');
       navigate('/', { replace: true });
     },
     onError: (error) => {

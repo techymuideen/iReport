@@ -7,7 +7,7 @@ const TableContext = createContext(undefined);
 const Table = ({ children }) => {
   return (
     <TableContext.Provider value={1}>
-      <div className='border border-gray-200 text-sm bg-white rounded-lg gap-8 overflow-hidden'>
+      <div className="gap-8 overflow-hidden rounded-lg border border-gray-200 bg-white text-sm">
         {children}
       </div>
     </TableContext.Provider>
@@ -25,7 +25,7 @@ const Header = ({ children }) => {
   }
 
   return (
-    <div className='grid sm:grid-cols-[minmax(120px,_1fr)_150px_150px] grid-cols-1 gap-6 items-center px-6 py-4 bg-gray-50  ml-2 border-b border-gray-100 uppercase  [&:not(:first-child)]:text-center text-gray-600 font-semibold'>
+    <div className="ml-2 grid grid-cols-3 items-center gap-6 border-b border-gray-100 bg-gray-50 px-6 py-4 font-semibold uppercase text-gray-600 [&:not(:first-child)]:text-center">
       {children}
     </div>
   );
@@ -44,7 +44,8 @@ const Row = ({ children, id }) => {
   return (
     <Link
       to={`/report/${id}`}
-      className='grid sm:grid-cols-[minmax(120px,_1fr)_150px_150px] px-6 grid-cols-1 gap-6 items-center  py-2 ml-2 rounded-3xl uppercase text-gray-600 font-medium hover:bg-gray-100'>
+      className="ml-2 grid grid-cols-3 items-center gap-6 rounded-3xl px-6 py-2 font-medium uppercase text-gray-600 hover:bg-gray-100"
+    >
       {children}
     </Link>
   );
@@ -52,19 +53,19 @@ const Row = ({ children, id }) => {
 
 Row.propTypes = {
   children: PropTypes.node.isRequired,
-  id: PropTypes.number,
+  id: PropTypes.any,
 };
 
 const Body = ({ data, render }) => {
   if (!data.length) {
     return (
-      <p className='text-center font-medium  text-gray-500 py-8'>
+      <p className="py-8 text-center font-medium text-gray-500">
         No data found!
       </p>
     );
   }
 
-  return <div className='space-y-2 py-4'>{data.map(render)}</div>;
+  return <div className="space-y-2 py-4">{data.map(render)}</div>;
 };
 
 Body.propTypes = {
@@ -75,7 +76,7 @@ Body.propTypes = {
 const Footer = ({ children }) => {
   return (
     children && (
-      <div className='bg-gray-50 flex justify-center px-6 py-3'>{children}</div>
+      <div className="flex justify-center bg-gray-50 px-6 py-3">{children}</div>
     )
   );
 };

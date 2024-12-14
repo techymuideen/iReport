@@ -1,5 +1,6 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useGoogleAuth } from '../authentication/useGoogleAuth';
+import MiniSpinner from '../../ui/MiniSpinner';
 
 const GoogleAuth = () => {
   const { handleGoogleSuccess, isLoading } = useGoogleAuth();
@@ -16,12 +17,18 @@ const GoogleAuth = () => {
       type="button"
       className="flex w-full items-center justify-center rounded border border-gray-300 px-4 py-2 shadow hover:bg-gray-100 focus:outline-none"
     >
-      <img
-        src="https://img.icons8.com/color/24/000000/google-logo.png"
-        alt="Google logo"
-        className="mr-2 h-5 w-5"
-      />
-      {isLoading ? 'Loading' : 'Sign up with Google'}
+      {isLoading ? (
+        <MiniSpinner />
+      ) : (
+        <span className="flex items-center">
+          <img
+            src="https://img.icons8.com/color/24/000000/google-logo.png"
+            alt="Google logo"
+            className="mr-2 h-5 w-5"
+          />
+          Sign up with Google
+        </span>
+      )}
     </button>
   );
 };

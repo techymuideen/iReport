@@ -13,7 +13,7 @@ function Filter({ filterField, options }) {
   }
 
   return (
-    <div className="flex gap-1 rounded-sm border border-gray-100 bg-gray-50 p-1 shadow-sm">
+    <div className="flex justify-center gap-1 rounded-sm border border-gray-100 bg-gray-50 p-1 shadow-sm">
       {options.map((option) => (
         <button
           key={option.value}

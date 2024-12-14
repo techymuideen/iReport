@@ -1,4 +1,3 @@
-// src/hooks/useGoogleAuth.js
 import { useMutation } from '@tanstack/react-query';
 import { googleAuth as googleAuthApi } from '../../services/apiAuth';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,7 +12,10 @@ export const useGoogleAuth = () => {
     mutationFn: googleAuthApi,
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
+
+      // Directly update the user query data
       queryClient.setQueryData(['user'], data.data.user);
+
       toast.success('Login successful');
       navigate('/', { replace: true });
     },
@@ -29,5 +31,6 @@ export const useGoogleAuth = () => {
       toast.error('Invalid Google Response');
     }
   };
-  return { handleGoogleSuccess, isLoading: googleAuthMutation.isLoading };
+
+  return { handleGoogleSuccess, isLoading: googleAuthMutation.isPending };
 };

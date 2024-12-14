@@ -11,7 +11,9 @@ export const useLogout = () => {
     mutationFn: () => logoutApi(),
     onSuccess: () => {
       localStorage.removeItem('token');
-      queryClient.setQueryData(['user'], ['']);
+      queryClient.setQueryData(['user'], null);
+      queryClient.setQueryData(['reports'], null);
+      queryClient.clear();
       navigate('/login');
     },
     onError: () => {

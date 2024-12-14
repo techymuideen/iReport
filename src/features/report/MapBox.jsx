@@ -10,8 +10,8 @@ import GeoCoder from './GeoCoder';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MapBox = ({ location, setLocation }) => {
-  const handleViewChange = evt => {
-    setLocation(prevLocation => ({
+  const handleViewChange = (evt) => {
+    setLocation((prevLocation) => ({
       ...prevLocation,
       lat: evt.lngLat.lat,
       long: evt.lngLat.lng,
@@ -23,15 +23,15 @@ const MapBox = ({ location, setLocation }) => {
   useEffect(() => {
     if (!location.long && !location.lat) {
       fetch('https://ipapi.co/json')
-        .then(response => {
+        .then((response) => {
           return response.json();
         })
-        .then(data => {
+        .then((data) => {
           mapRef.current.flyTo({
             center: [data.longitude, data.latitude],
           });
 
-          setLocation(prevLocation => ({
+          setLocation((prevLocation) => ({
             ...prevLocation,
             lat: data.latitude,
             long: data.longitude,
@@ -39,8 +39,6 @@ const MapBox = ({ location, setLocation }) => {
         });
     }
   }, [location.lat, location.long, setLocation]);
-
-  console.log(import.meta.env.VITE_MAPBOX_ACCESS_TOKEN);
 
   return (
     <ReactMapGL
@@ -53,26 +51,28 @@ const MapBox = ({ location, setLocation }) => {
       }}
       interactive={Boolean(setLocation)}
       style={{ height: 400, width: '100%' }}
-      mapStyle='mapbox://styles/mapbox/streets-v11'
+      mapStyle="mapbox://styles/mapbox/streets-v11"
       scrollZoom={location.scrollZoom}
-      onClick={handleViewChange}>
+      onClick={handleViewChange}
+    >
       <Marker
         draggable={Boolean(setLocation)}
         onDragEnd={handleViewChange}
         latitude={location.lat}
         longitude={location.long}
-        anchor='top'>
+        anchor="top"
+      >
         <div>
-          <FaLocationDot size={20} fill='red' />
+          <FaLocationDot size={20} fill="red" />
         </div>
       </Marker>
-      {Boolean(setLocation) && <NavigationControl position='bottom-right' />}
+      {Boolean(setLocation) && <NavigationControl position="bottom-right" />}
       {Boolean(setLocation) && (
         <GeolocateControl
-          position='top-left'
+          position="top-left"
           trackUserLocation
-          onGeolocate={e =>
-            setLocation(prevLocation => ({
+          onGeolocate={(e) =>
+            setLocation((prevLocation) => ({
               ...prevLocation,
               lat: e.coords.latitude,
               long: e.coords.longitude,

@@ -1,21 +1,14 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AppContext from '../context/AppContext';
-
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from 'react-icons/io5';
-
-import { useUser } from '../features/authentication/useUser';
-import { useLogout } from '../features/authentication/useLogout';
-
 import Logo from './Logo';
-import Modal from './Modal';
-import ConfirmLogout from './ConfirmLogout';
+import { useUser } from '../features/authentication/useUser';
 
 const Header = () => {
+  const { user, isAuthenticated } = useUser();
   const { showNavMobile, setShowNavMobile } = useContext(AppContext);
-  const { isAuthenticated, user } = useUser();
-  const { logout, isLoading } = useLogout();
 
   const handleChange = () => {
     setShowNavMobile((prev) => !prev);
@@ -29,22 +22,6 @@ const Header = () => {
           <button className="rounded-lg bg-blue-600 px-4 py-2 uppercase text-white transition hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
             <Link to="/login"> Log in</Link>
           </button>
-        )}
-
-        {isAuthenticated && (
-          <Modal>
-            <Modal.Open opens="logout">
-              <button
-                onClick={logout}
-                className="rounded-lg bg-blue-600 px-4 py-2 uppercase text-white transition hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
-              >
-                Log out
-              </button>
-            </Modal.Open>
-            <Modal.Window name="logout">
-              <ConfirmLogout disabled={isLoading} onConfirm={logout} />
-            </Modal.Window>
-          </Modal>
         )}
 
         {isAuthenticated && (

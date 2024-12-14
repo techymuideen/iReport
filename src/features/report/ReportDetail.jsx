@@ -1,108 +1,109 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MapBox from '../report/MapBox';
 import Button from '../../ui/Button';
 import Modal from '../../ui/Modal';
 import ConfirmDelete from '../../ui/ConfirmDelete';
+import Spinner from '../../ui/Spinner';
+import { useReport } from '../../features/report/useReport';
+import toast from 'react-hot-toast';
+import { useDeleteReport } from '../../features/report/useDeleteReport';
+import MiniSpinner from '../../ui/MiniSpinner';
+import { useUser } from '../../features/authentication/useUser';
 
-const mockReports = [
-  {
-    id: '1',
-    title: 'Flooding in the Park',
-    description: 'Heavy flooding occurred due to blocked drainage.',
-    recordType: 'red-flag',
-    images: [
-      'https://media.istockphoto.com/id/1497485073/photo/house-exterior-flood-disaster.webp?a=1&b=1&s=612x612&w=0&k=20&c=nDbs3_TUZAsy_lyM5c8-M_ciNdnq9G0NSh7PenUZSkQ=',
-      'https://images.unsplash.com/photo-1580974511812-4b7196fa5098?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zmxvb2R8ZW58MHx8MHx8fDA%3D',
-      'https://images.unsplash.com/photo-1600336153113-d66c79de3e91?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvb2R8ZW58MHx8MHx8fDA%3D',
-    ],
-    videos: [
-      'https://dm0qx8t0i9gc9.cloudfront.net/watermarks/video/BXJT8TRDeiymbx54w/videoblocks-flood-water-flows-across-the-road-in-a-powerful-stream-natural-disaster-flooded-streets-dirty-water-strong-currents_rwmxy89hdd__4e3e045b5e2944185b3498c4b9c7e14a__P360.mp4',
-    ],
-    location: { lat: 12.9716, long: 77.5946 },
-  },
-  {
-    id: '2',
-    title: 'Broken Streetlights',
-    description: 'Streetlights have been broken for over a week.',
-    recordType: 'intervention',
-    images: ['image3.jpg'],
-    videos: [],
-    location: { lat: 13.0827, long: 80.2707 },
-  },
-];
+import { useEffect, useState } from 'react';
 
 const ReportDetail = () => {
-  const { reportId } = useParams(); // Simulated route params
   const navigate = useNavigate();
-  const report = mockReports.find(r => r.id === reportId);
+  const { reportId } = useParams();
+  const { report, isLoading, error } = useReport();
+  const { deleteReport, isLoading: isDeleting } = useDeleteReport();
+  const { user } = useUser();
 
-  const handleDelete = () => {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this report?',
-    );
-    if (!confirmed) return;
+  const [location, setLocation] = useState(
+    report?.location || { lat: null, long: null },
+  );
 
-    alert('Simulating deletion...');
-    navigate('/reports');
-  };
+  useEffect(() => {
+    if (report?.location) {
+      try {
+        const parsedLocation = JSON.parse(report?.location);
+        setLocation(parsedLocation); // Set the location if valid
+      } catch (error) {
+        console.log(error);
+        setLocation({ lat: null, long: null });
+      }
+    }
+  }, [report]);
+
+  if (isLoading) return <Spinner />;
+  if (error) toast.error(error.message);
 
   if (!report) {
     return (
-      <div className='flex justify-center items-center h-screen'>
+      <div className="flex h-screen items-center justify-center">
         Report not found.
       </div>
     );
   }
 
   return (
-    <div className='container mx-auto p-4'>
-      <div className='bg-white shadow rounded-lg p-6'>
-        <h1 className='text-3xl font-semibold mb-4'>{report.title}</h1>
+    <div className="container mx-auto p-4">
+      <div className="rounded-lg bg-white p-6 shadow">
+        <h1 className="mb-4 text-3xl font-semibold">{report.title}</h1>
 
-        <p className='text-gray-500 mb-2'>
+        <p className="mb-2 text-gray-500">
           <strong>Description:</strong> {report.description}
         </p>
 
-        <p className='text-gray-500 mb-2'>
+        <p className="mb-2 text-gray-500">
           <strong>Record Type:</strong>{' '}
           <span
-            className={`px-2 py-1 rounded ${
+            className={`rounded px-2 py-1 ${
               report.recordType === 'red-flag'
                 ? 'bg-red-100 text-red-700'
                 : 'bg-green-100 text-green-700'
-            }`}>
+            }`}
+          >
             {report.recordType === 'red-flag' ? 'Red-Flag' : 'Intervention'}
           </span>
         </p>
 
-        <p className='text-gray-500 mb-2'>
+        <p className="mb-2 text-gray-500">
           <strong>Status:</strong>{' '}
           <span
-            className={`px-2 py-1 rounded ${
+            className={`rounded px-2 py-1 ${
               report.status === 'resolved'
                 ? 'bg-[#0088FE] text-white'
                 : report.status === 'draft' || report.status === 'investigation'
-                ? 'bg-[#FFBB28] text-white'
-                : 'bg-[#FF8042] text-white'
-            }`}>
+                  ? 'bg-[#FFBB28] text-white'
+                  : 'bg-[#FF8042] text-white'
+            }`}
+          >
             {report.status === 'resolved'
               ? 'Resolved'
               : report.status === 'investigation'
-              ? 'Investigation'
-              : 'Rejected'}
+                ? 'Investigation'
+                : 'Rejected'}
           </span>
         </p>
 
-        <div className='mb-4'>
+        {user.isAdmin && (
+          <p className="mb-2 text-gray-500">
+            <strong>Reporter:</strong> {report?.createdBy?.firstname}{' '}
+            {report?.createdBy?.lastname}
+          </p>
+        )}
+
+        <div className="mb-4">
           <strong>Images:</strong>
-          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2'>
+          <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {report.images.length > 0 ? (
               report.images.map((img, index) => (
                 <img
                   key={index}
                   src={img}
                   alt={`Report Image ${index + 1}`}
-                  className='w-full h-40 object-cover rounded'
+                  className="h-40 w-full rounded object-cover"
                 />
               ))
             ) : (
@@ -111,13 +112,13 @@ const ReportDetail = () => {
           </div>
         </div>
 
-        <div className='mb-4'>
+        <div className="mb-4">
           <strong>Videos:</strong>
-          <div className='mt-2'>
+          <div className="mt-2">
             {report.videos.length > 0 ? (
               report.videos.map((video, index) => (
-                <video key={index} controls className='w-full h-auto rounded'>
-                  <source src={video} type='video/mp4' />
+                <video key={index} controls className="h-auto w-full rounded">
+                  <source src={video} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               ))
@@ -127,18 +128,17 @@ const ReportDetail = () => {
           </div>
         </div>
 
-        <div className='mb-4'>
+        <div className="mb-4">
           <strong>Location:</strong>
-          {report.location.lat && report.location.long ? (
+          {location.lat && location.long ? (
             <div>
               <p>
-                Latitude: {report.location.lat}, Longitude:{' '}
-                {report.location.long}
+                Latitude: {location.lat}, Longitude: {location.long}
               </p>
               <MapBox
                 location={{
-                  lat: report.location.lat,
-                  long: report.location.long,
+                  lat: location.lat,
+                  long: location.long,
                 }}
               />
             </div>
@@ -147,24 +147,29 @@ const ReportDetail = () => {
           )}
         </div>
 
-        <div className='flex justify-end space-x-4 mt-4'>
+        <div className="mt-4 flex justify-end space-x-4">
           <Modal>
-            {/* <Button variation='resolve'>Resolve</Button>
-            <Button variation='investigate'>Investigate</Button>
-            <Button variation='reject'>Reject</Button> */}
-            <Button onClick={() => navigate(`/report/edit/${reportId}`)}>
-              Edit
-            </Button>
-            <Modal.Open opens='delete'>
-              <Button variation='danger' onClick={handleDelete}>
-                Delete
+            {user?.isAdmin && (
+              <>
+                <Button variation="resolve">Resolve</Button>
+                <Button variation="reject">Reject</Button>
+              </>
+            )}
+            {!user?.isAdmin && (
+              <Button onClick={() => navigate(`/report/edit/${reportId}`)}>
+                Edit
+              </Button>
+            )}
+            <Modal.Open opens="delete">
+              <Button variation="danger">
+                {isDeleting ? <MiniSpinner /> : 'Delete'}
               </Button>
             </Modal.Open>
-            <Modal.Window name='delete'>
+            <Modal.Window name="delete">
               <ConfirmDelete
-                resourceName='report'
-                disabled={false}
-                onConfirm={() => alert('deleted Successfully')}
+                resourceName="report"
+                disabled={isDeleting}
+                onConfirm={() => deleteReport(reportId)}
               />
             </Modal.Window>
           </Modal>

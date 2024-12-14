@@ -8,8 +8,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary
       FallbackComponent={ErrorFallBack}
-      onReset={() => window.location.replace('/')}>
-      <App />,
+      onReset={() => window.location.replace('/')}
+    >
+      <App />
     </ErrorBoundary>
   </StrictMode>,
 );

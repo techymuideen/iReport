@@ -21,10 +21,10 @@ function ConfirmLogout({ onConfirm, disabled, onCloseModal }) {
 }
 
 ConfirmLogout.propTypes = {
-  resourceName: PropTypes.string.isRequired,
+  resourceName: PropTypes.string,
   onConfirm: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
-  onCloseModal: PropTypes.func.isRequired,
+  onCloseModal: PropTypes.func,
 };
 
 export default ConfirmLogout;

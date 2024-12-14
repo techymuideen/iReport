@@ -103,7 +103,7 @@ function App() {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
         <Toaster
           position="top-center"
           gutter={12}
@@ -119,8 +119,8 @@ function App() {
               fontSize: '16px',
               maxWidth: '500px',
               padding: '16px 24px',
-              backgroundColor: 'var(--color-grey-0',
-              color: 'var(--color-grey-700',
+              backgroundColor: '#fff',
+              color: '#374151',
             },
           }}
         />
