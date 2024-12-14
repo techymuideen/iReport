@@ -76,6 +76,9 @@ export const login = async ({ email, password }) => {
 
 export const getCurrentUser = async () => {
   const token = localStorage.getItem('token');
+
+  if (!token) return;
+
   const response = await axios.get(
     `${import.meta.env.VITE_API_URL}/api/v1/users/me`,
 
