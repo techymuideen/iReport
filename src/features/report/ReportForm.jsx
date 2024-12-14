@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import SelectVideo from './SelectVideo';
 import SelectImage from './SelectImage';
 import SelectLocation from './SelectLocation';
 import Button from '../../ui/Button';
 import MapBox from './MapBox';
+import { useCreateReport } from './useCreateReport';
+import MiniSpinner from '../../ui/MiniSpinner';
 
-const EditReportForm = ({ initialData, title }) => {
+const ReportForm = ({ initialData, title }) => {
+  const { createReport, isLoading } = useCreateReport();
   const [recordType, setRecordType] = useState(
     initialData.recordType || 'red-flag',
   );
@@ -23,121 +26,133 @@ const EditReportForm = ({ initialData, title }) => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-  } = useForm({
-    defaultValues: {
-      title: initialData.title || '',
-      description: initialData.description || '',
-    },
-  });
+    reset,
+  } = useForm();
 
-  useEffect(() => {
-    setValue('title', initialData.title);
-    setValue('description', initialData.description);
-  }, [initialData, setValue]);
+  const onSubmit = (formData) => {
+    const payload = new FormData();
 
-  const onSubmit = data => {
-    console.log('Form Data:', data);
-    console.log('Images:', images);
-    console.log('Videos:', videos);
-    console.log('Geolocation:', location);
-    console.log('Record Type:', recordType);
+    // Append form fields
+    Object.entries(formData).forEach(([key, value]) => {
+      payload.append(key, value);
+    });
+
+    payload.append('type', recordType);
+
+    if (location.lat && location.long) {
+      payload.append('location', JSON.stringify(location));
+    }
+
+    if (images) {
+      images.forEach((image) => {
+        payload.append('images', image); // Appends each file as binary
+      });
+    }
+
+    if (videos) {
+      videos.forEach((video) => {
+        payload.append('videos', video); // Appends each file as binary
+      });
+    }
+
+    createReport(payload, {
+      onSuccess: () => reset(),
+    });
   };
 
   return (
-    <div className='py-12 px-4 bg-white rounded-md'>
-      <h1 className='text-3xl font-semibold text-center mb-6'>{title}</h1>
+    <div className="rounded-md bg-white px-4 py-12">
+      <h1 className="mb-6 text-center text-3xl font-semibold">{title}</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Buttons for Record Type */}
-        <div className='flex justify-center mb-6'>
+        <div className="mb-6 flex justify-center">
           <button
-            type='button'
-            className={`py-2 px-6 ${
+            type="button"
+            className={`px-6 py-2 ${
               recordType === 'red-flag'
                 ? 'bg-red-500 text-white'
                 : 'bg-gray-200'
             }`}
-            onClick={() => setRecordType('red-flag')}>
+            onClick={() => setRecordType('red-flag')}
+          >
             Red-Flag
           </button>
           <button
-            type='button'
-            className={`py-2 px-6 ${
+            type="button"
+            className={`px-6 py-2 ${
               recordType === 'intervention'
                 ? 'bg-green-500 text-white'
                 : 'bg-gray-200'
             }`}
-            onClick={() => setRecordType('intervention')}>
+            onClick={() => setRecordType('intervention')}
+          >
             Intervention
           </button>
         </div>
-
         {/* Form Fields */}
-        <div className='mb-4'>
-          <label htmlFor='title' className='block text-gray-700'>
+        <div className="mb-4">
+          <label htmlFor="title" className="block text-gray-700">
             Title
           </label>
           <input
-            id='title'
-            type='text'
+            id="title"
+            type="text"
             {...register('title', { required: 'Title is required' })}
-            className='w-full px-4 py-2 border rounded-md'
+            className="w-full rounded-md border px-4 py-2"
           />
           {errors.title && (
-            <span className='text-red-500'>{errors.title.message}</span>
+            <span className="text-red-500">{errors.title.message}</span>
           )}
         </div>
-
-        <div className='mb-4'>
-          <label htmlFor='description' className='block text-gray-700'>
+        <div className="mb-4">
+          <label htmlFor="description" className="block text-gray-700">
             Description
           </label>
           <textarea
-            id='description'
+            id="description"
             {...register('description', {
               required: 'Description is required',
             })}
-            className='w-full px-4 py-2 resize-none h-40 border rounded-md'
+            className="h-40 w-full resize-none rounded-md border px-4 py-2"
           />
           {errors.description && (
-            <span className='text-red-500'>{errors.description.message}</span>
+            <span className="text-red-500">{errors.description.message}</span>
           )}
         </div>
-
         {/* Media and Location Selectors */}
         <SelectImage
           images={images}
           setImages={setImages}
           setImageError={setImageError}
         />
-        {imageError && <span className='text-red-500'>{imageError}</span>}
-
+        {imageError && <span className="text-red-500">{imageError}</span>}
         <SelectVideo
           videos={videos}
           setVideos={setVideos}
           setVideoError={setVideoError}
         />
-        {videoError && <span className='text-red-500'>{videoError}</span>}
-
+        {videoError && <span className="text-red-500">{videoError}</span>}
         <SelectLocation location={location} setLocation={setLocation} />
-        <div className='py-8'>
+        <div className="py-8">
           {location.lat && location.long && (
             <MapBox location={location} setLocation={setLocation} />
           )}
         </div>
-
         {/* Submit Button */}
-        <Button type='submit'>Submit Report</Button>
+        <Button type="submit">
+          {isLoading ? <MiniSpinner /> : 'Submit Report'}
+        </Button>
       </form>
     </div>
   );
 };
 
 // Define PropTypes
-EditReportForm.propTypes = {
+ReportForm.propTypes = {
   title: PropTypes.string.isRequired,
   initialData: PropTypes.shape({
+    id: PropTypes.number,
     title: PropTypes.string,
     description: PropTypes.string,
     recordType: PropTypes.oneOf(['red-flag', 'intervention']),
@@ -150,4 +165,4 @@ EditReportForm.propTypes = {
   }),
 };
 
-export default EditReportForm;
+export default ReportForm;

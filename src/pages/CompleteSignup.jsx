@@ -1,58 +1,71 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useCompleteSignup } from '../features/authentication/useCompleteSignup';
 
 import Input from '../ui/Input';
 import Button from '../ui/Button';
+import MiniSpinner from '../ui/MiniSpinner';
 import Label from '../ui/Label';
 
 const Signup = () => {
+  const { completeSignup, isLoading } = useCompleteSignup();
+  const { token } = useParams(); // Simulated route params
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = data => console.log(data);
+  if (!token) navigate('/signup');
+
+  const onSubmit = (data) => completeSignup({ ...data, token });
 
   return (
-    <div className=' w-full px-5 py-12  min-h-[calc(100vh-4rem)] flex justify-center items-center'>
+    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center px-5 py-12">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='bg-white max-w-[30rem] flex-1 rounded-md font-semibold flex flex-col py-8 px-4 sm:px-6 gap-4 items-center'>
-        <h2 className='text-2xl'>Complete Signup</h2>
-        <div className='w-full'>
+        className="flex max-w-[30rem] flex-1 flex-col items-center gap-4 rounded-md bg-white px-4 py-8 font-semibold sm:px-6"
+      >
+        <h2 className="text-2xl">Complete Signup</h2>
+        <div className="w-full">
           <Input
-            type='text'
-            placeholder='Firstname'
+            type="text"
+            placeholder="Firstname"
             {...register('firstname', {
               required: 'Firstname is required',
             })}
           />
           {errors.firstname && <Label>{errors.firstname.message}</Label>}
         </div>
-        <div className='w-full'>
+        <div className="w-full">
           <Input
-            type='text'
-            placeholder='Lastname'
+            type="text"
+            placeholder="Lastname"
             {...register('lastname', {
               required: 'Lastname is required',
             })}
           />
           {errors.lastname && <Label>{errors.lastname.message}</Label>}
         </div>
-        <div className='w-full'>
+        <div className="w-full">
           <Input
-            type='text'
-            placeholder='Other names'
+            type="text"
+            placeholder="Other names"
             {...register('othername')}
           />
         </div>
-        <div className='w-full'>
+        <div className="w-full">
           <Input
-            type='text'
-            placeholder='Username'
+            type="text"
+            placeholder="Username"
             {...register('username', {
               required: 'Username is required',
+              pattern: {
+                value: /^[a-zA-Z0-9]*$/, // Alphanumeric regex
+                message: 'Only alphanumeric characters are allowed',
+              },
               minLength: {
                 value: 6,
                 message: 'Username must be at least 6 characters',
@@ -61,22 +74,24 @@ const Signup = () => {
           />
           {errors.username && <Label>{errors.username.message}</Label>}
         </div>
-        <div className='w-full'>
+        <div className="w-full">
           <Input
-            className='appearance-none'
-            type='number'
-            placeholder='Phone Number'
-            {...register('phone', {
+            className="appearance-none"
+            type="number"
+            placeholder="Phone Number"
+            {...register('phoneNumber', {
               required: 'Phone Number is required',
             })}
           />
-          {errors.phone && <Label>{errors.phone.message}</Label>}
+          {errors.phoneNumber && <Label>{errors.phoneNumber.message}</Label>}
         </div>
-        <Button type='submit'>Signup</Button>
-        <p className='text-slate-400 font-light'>
+        <Button type="submit">
+          {isLoading ? <MiniSpinner /> : 'Complete Signup'}
+        </Button>
+        <p className="font-light text-slate-400">
           Already have an account?{' '}
-          <span className='text-sky-600'>
-            <Link to='/login'>Login</Link>
+          <span className="text-sky-600">
+            <Link to="/login">Login</Link>
           </span>
         </p>
       </form>

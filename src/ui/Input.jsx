@@ -6,7 +6,7 @@ const Input = forwardRef(({ placeholder, className, type, ...props }, ref) => {
     <input
       id={placeholder}
       ref={ref} // Allow ref forwarding
-      className={`${className} py-2 w-full border-[1px] bg-none outline-none px-4 rounded-md`}
+      className={`${className} w-full rounded-md border-[1px] bg-none px-4 py-2 outline-none`}
       placeholder={placeholder}
       type={type}
       {...props} // Spread additional props like `value`, `onChange`, etc.

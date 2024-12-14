@@ -2,9 +2,9 @@
 import Filter from '../../ui/Filter';
 function ReportTableOperations() {
   return (
-    <div className='sm:flex items-center justify-between gap-6 '>
+    <div className="items-center justify-between gap-6 sm:flex">
       <Filter
-        filterField='type'
+        filterField="type"
         options={[
           { value: 'all', label: 'All' },
           { value: 'red-flag', label: 'Red-Flag' },
@@ -13,11 +13,11 @@ function ReportTableOperations() {
       />
 
       <Filter
-        filterField='status'
+        filterField="status"
         options={[
           { value: 'all', label: 'All' },
           { value: 'resolved', label: 'Resolved' },
-          { value: 'investigation', label: 'Investigation' },
+          { value: 'investigating', label: 'Investigation' },
           { value: 'rejected', label: 'Rejected' },
         ]}
       />

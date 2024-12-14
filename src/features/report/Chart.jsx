@@ -13,24 +13,26 @@ import {
 const COLORS = ['#0088FE', '#FFBB28', '#FF8042'];
 
 const Chart = ({ chartData }) => {
+  console.log(chartData);
   return (
-    <div className='bg-white shadow-md rounded-lg p-6 flex flex-col items-center md:items-start'>
-      <h2 className='text-2xl font-semibold mb-4 text-center md:text-left'>
+    <div className="flex flex-col items-center rounded-lg bg-white p-6 shadow-md md:items-start">
+      <h2 className="mb-4 text-center text-2xl font-semibold md:text-left">
         Report Stats
       </h2>
-      <div className='w-full h-[25rem] sm:h-[20rem]'>
-        <ResponsiveContainer width='100%'>
+      <div className="h-[25rem] w-full sm:h-[20rem]">
+        <ResponsiveContainer width="100%">
           <PieChart>
             <Pie
               data={chartData}
-              dataKey='value'
-              nameKey='name'
-              cx='72%'
-              cy='40%'
+              dataKey="value"
+              nameKey="name"
+              cx="72%"
+              cy="40%"
               innerRadius={80}
               outerRadius={120}
-              fill='#8884d8'
-              paddingAngle={2}>
+              fill="#8884d8"
+              paddingAngle={2}
+            >
               {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
@@ -40,12 +42,12 @@ const Chart = ({ chartData }) => {
               ))}
             </Pie>
             <Legend
-              align='right'
-              verticalAlign='bottom'
-              width='30%'
-              layout='vertical'
+              align="right"
+              verticalAlign="bottom"
+              width="30%"
+              layout="vertical"
               iconSize={15}
-              iconType='circle'
+              iconType="circle"
             />
             <Tooltip />
           </PieChart>

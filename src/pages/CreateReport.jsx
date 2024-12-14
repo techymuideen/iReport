@@ -10,7 +10,7 @@ const initialData = {
 };
 
 const CreateReport = () => {
-  return <ReportForm initialData={initialData} title='Create Report' />;
+  return <ReportForm initialData={initialData} title="Create Report" />;
 };
 
 export default CreateReport;

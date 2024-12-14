@@ -1,29 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
+import { useForgetPassword } from '../features/authentication/useForgetPassword';
+
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import Label from '../ui/Label';
+import MiniSpinner from '../ui/MiniSpinner';
 
 const ForgetPassword = () => {
+  const { isLoading, forgetPassword } = useForgetPassword();
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = ({ email }) => {
+    forgetPassword(
+      { email },
+      {
+        onSuccess: () => reset(),
+      },
+    );
+  };
 
   return (
-    <div className=' w-full px-5 py-12  min-h-[calc(100vh-4rem)] flex justify-center items-center'>
+    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center px-5 py-12">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='bg-white max-w-[30rem] flex-1 rounded-md font-semibold flex flex-col py-8 px-4 sm:px-6 gap-4 items-center'>
-        <h2 className='text-2xl'>Forget Password</h2>
-        <div className='w-full'>
+        className="flex max-w-[30rem] flex-1 flex-col items-center gap-4 rounded-md bg-white px-4 py-8 font-semibold sm:px-6"
+      >
+        <h2 className="text-2xl">Forget Password</h2>
+        <div className="w-full">
           <Input
-            type='email'
-            placeholder='Email'
+            type="email"
+            placeholder="Email"
             {...register('email', {
               required: 'Email is required',
               pattern: {
@@ -34,11 +48,11 @@ const ForgetPassword = () => {
           />
           {errors.email && <Label>{errors.email.message}</Label>}
         </div>
-        <Button type='submit'>Confirm</Button>
-        <p className='text-slate-400 font-light'>
+        <Button type="submit">{isLoading ? <MiniSpinner /> : 'Confirm'}</Button>
+        <p className="font-light text-slate-400">
           Already have an account?{' '}
-          <span className='text-sky-600'>
-            <Link to='/login'>Login</Link>
+          <span className="text-sky-600">
+            <Link to="/login">Login</Link>
           </span>
         </p>
       </form>

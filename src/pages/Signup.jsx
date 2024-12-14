@@ -1,33 +1,47 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useSignup } from '../features/authentication/useSignup';
 
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import Password from '../ui/Password';
+import MiniSpinner from '../ui/MiniSpinner';
 import Label from '../ui/Label';
+import GoogleAuth from '../features/authentication/GoogleAuth';
 
 const Signup = () => {
+  const { signup, isLoading } = useSignup();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm();
 
   const passwordValue = watch('password', '');
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = ({ email, password, passwordConfirm }) => {
+    signup(
+      { email, password, passwordConfirm },
+      {
+        onSuccess: () => reset(),
+      },
+    );
+  };
 
   return (
-    <div className=' w-full px-5 py-12  min-h-[calc(100vh-4rem)] flex justify-center items-center'>
+    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center px-5 py-12">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='bg-white max-w-[30rem] flex-1 rounded-md font-semibold flex flex-col py-8 px-4 sm:px-6 gap-4 items-center'>
-        <h2 className='text-2xl'>Signup</h2>
-        <div className='w-full'>
+        className="flex max-w-[30rem] flex-1 flex-col items-center gap-4 rounded-md bg-white px-4 py-8 font-semibold sm:px-6"
+      >
+        <h2 className="text-2xl">Signup</h2>
+        <div className="w-full">
           <Input
-            type='email'
-            placeholder='Email'
+            type="email"
+            placeholder="Email"
             {...register('email', {
               required: 'Email is required',
               pattern: {
@@ -39,9 +53,10 @@ const Signup = () => {
           {errors.email && <Label>{errors.email.message}</Label>}
         </div>
 
-        <div className='w-full'>
+        <div className="w-full">
           <Password
-            placeholder='Create password'
+            placeholder="Create password"
+            id="password"
             {...register('password', {
               required: 'Password is required',
               minLength: {
@@ -53,45 +68,36 @@ const Signup = () => {
           {errors.password && <Label>{errors.password.message}</Label>}
         </div>
 
-        <div className='w-full'>
+        <div className="w-full">
           <Password
-            placeholder='Confirm password'
+            placeholder="Confirm password"
             password={passwordValue} // Pass password value to confirm password component
-            {...register('confirmPassword', {
+            id="passwordConfirm"
+            {...register('passwordConfirm', {
               required: 'Confirm Password is required',
-              validate: value =>
+              validate: (value) =>
                 value === passwordValue || 'Passwords do not match', // Custom validation to check if passwords match
             })}
           />
-          {errors.confirmPassword && (
-            <Label>{errors.confirmPassword.message}</Label>
+          {errors.passwordConfirm && (
+            <Label>{errors.passwordConfirm.message}</Label>
           )}
         </div>
-        <Button type='submit'>Signup</Button>
+        <Button type="submit">{isLoading ? <MiniSpinner /> : 'Signup'}</Button>
 
-        <p className='text-slate-400 font-light'>
+        <p className="font-light text-slate-400">
           Already have an account?{' '}
-          <span className='text-sky-600'>
-            <Link to='/login'>Login</Link>
+          <span className="text-sky-600">
+            <Link to="/login">Login</Link>
           </span>
         </p>
 
-        <div className='flex items-center w-full'>
-          <div className='border-t border-gray-300 h-1 flex-grow'></div>
-          <span className='px-3 text-gray-500'>OR</span>
-          <div className='border-t border-gray-300 h-1 flex-grow'></div>
+        <div className="flex w-full items-center">
+          <div className="h-1 flex-grow border-t border-gray-300"></div>
+          <span className="px-3 text-gray-500">OR</span>
+          <div className="h-1 flex-grow border-t border-gray-300"></div>
         </div>
-
-        <button
-          type='button'
-          className='w-full py-2 px-4 flex items-center justify-center border border-gray-300 rounded shadow hover:bg-gray-100 focus:outline-none'>
-          <img
-            src='https://img.icons8.com/color/24/000000/google-logo.png'
-            alt='Google logo'
-            className='w-5 h-5 mr-2'
-          />
-          Sign up with Google
-        </button>
+        <GoogleAuth />
       </form>
     </div>
   );

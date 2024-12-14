@@ -3,37 +3,37 @@ import { useNavigate } from 'react-router-dom';
 import Table from './ReportTable';
 import Button from '../../ui/Button';
 
-const ReportListItem = ({ redFlagData }) => {
+const ReportListItem = ({ reports }) => {
   const navigate = useNavigate();
 
   return (
     <Table>
       <Table.Header>
         <span>Name</span>
-        <span className='text-center sm:inline hidden'>Type</span>
-        <span className='text-center sm:inline hidden'>Status</span>
+        <span className="text-center sm:inline">Type</span>
+        <span className="text-center sm:inline">Status</span>
       </Table.Header>
       <Table.Body
-        data={redFlagData}
-        render={item => (
+        data={reports}
+        render={(item) => (
           <Table.Row id={item.id} key={item.id}>
-            <span>{item.description}</span>
+            <span className="line-clamp-1">{item.title}</span>
             <span
-              className={`px-4 py-2 text-center sm:inline hidden rounded-full ${
-                item.type === 'red-flag'
-                  ? 'bg-red-500 text-white'
-                  : 'bg-green-500 text-white'
-              }`}>
+              className={`line-clamp-1 rounded-full px-1 py-2 text-center sm:inline sm:px-4 ${
+                item.type === 'red-flag' ? 'text-red-500' : 'text-green-500'
+              }`}
+            >
               {item.type}
             </span>
             <span
-              className={`px-4 text-center py-2 sm:inline hidden rounded-full ${
+              className={`line-clamp-1 rounded-full px-1 py-2 text-center sm:inline sm:px-4 ${
                 item.status === 'resolved'
-                  ? 'bg-[#0088FE] text-white'
+                  ? 'text-[#0088FE]'
                   : item.status === 'draft' || item.status === 'investigation'
-                  ? 'bg-[#FFBB28] text-white'
-                  : 'bg-[#FF8042] text-white'
-              }`}>
+                    ? 'text-[#FFBB28]'
+                    : 'text-[#FF8042]'
+              }`}
+            >
               {item.status}
             </span>
           </Table.Row>
@@ -47,7 +47,7 @@ const ReportListItem = ({ redFlagData }) => {
 };
 
 ReportListItem.propTypes = {
-  redFlagData: PropTypes.array.isRequired,
+  reports: PropTypes.array.isRequired,
 };
 
 export default ReportListItem;

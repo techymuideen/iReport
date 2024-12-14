@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const Button = props => {
+const Button = (props) => {
   let variation = 'bg-sky-600';
   if (props.variation === 'danger') variation = 'bg-red-600';
   if (props.variation === 'reject') variation = 'bg-[#FF8042]';
@@ -11,7 +11,8 @@ const Button = props => {
     <button
       onClick={props.onClick}
       type={props.type ? props.type : 'button'}
-      className={` hover:bg-opacity-80 transition-all rounded-sm  w-full py-2 text-white px-4 ${variation} ${props.className} `}>
+      className={`w-full rounded-sm px-4 py-2 text-white transition-all hover:bg-opacity-80 ${variation} ${props.className} `}
+    >
       {props.children}
     </button>
   );
@@ -19,7 +20,7 @@ const Button = props => {
 
 Button.propTypes = {
   variation: PropTypes.string,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.any,
   className: PropTypes.string,
   type: PropTypes.string,
   onClick: PropTypes.func,

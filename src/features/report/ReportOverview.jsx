@@ -1,57 +1,28 @@
+import toast from 'react-hot-toast';
+import { useReports } from './useReports';
+
 import Chart from './Chart';
 import ReportListItem from './ReportListItem';
 import ReportSummary from './ReportSummary';
 import TodayActivity from './TodayActivity';
-
-// Sample data for red-flag records
-const redFlagData = [
-  {
-    id: 1,
-    status: 'resolved',
-    description: 'Issue 1 resolved',
-    type: 'red-flag',
-  },
-  {
-    id: 2,
-    status: 'resolved',
-    description: 'Issue 2 in draft',
-    type: 'intervention',
-  },
-  {
-    id: 3,
-    status: 'investigation',
-    description: 'Issue 3 under investigation',
-    type: 'intervention',
-  },
-  {
-    id: 4,
-    status: 'rejected',
-    description: 'Issue 4 rejected',
-    type: 'red-flag',
-  },
-  {
-    id: 5,
-    status: 'resolved',
-    description: 'Issue 5 resolved',
-    type: 'red-flag',
-  },
-  {
-    id: 6,
-    status: 'rejected',
-    description: 'Issue 6 rejected',
-    type: 'intervention',
-  },
-];
+import Spinner from '../../ui/Spinner';
 
 const Profile = () => {
-  const resolved = redFlagData.filter(
-    record => record.status === 'resolved',
+  const { reports, isLoading, error } = useReports();
+  if (isLoading) return <Spinner />;
+  if (error) toast.error(error.message);
+
+  const shownReports = reports.slice(0, 5);
+
+  // Calculate resolved, unresolved, rejected counts
+  const resolved = reports.filter(
+    (record) => record.status === 'resolved',
   ).length;
-  const unresolved = redFlagData.filter(
-    record => record.status === 'investigation',
+  const unresolved = reports.filter(
+    (record) => record.status === 'investigating',
   ).length;
-  const rejected = redFlagData.filter(
-    record => record.status === 'rejected',
+  const rejected = reports.filter(
+    (record) => record.status === 'rejected',
   ).length;
 
   // Data for the pie chart
@@ -61,19 +32,43 @@ const Profile = () => {
     { name: 'Rejected', value: rejected },
   ];
 
+  // Get today's date
+  const today = new Date().toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+
+  // Count reports created today
+  const createdToday = reports.filter(
+    (record) => record.createdAt.split('T')[0] === today,
+  ).length;
+
+  // Count reports resolved today
+  const resolvedToday = reports.filter(
+    (record) =>
+      record.status === 'resolved' && record.updatedAt.split('T')[0] === today,
+  ).length;
+
+  // Count reports resolved today
+  const rejectedToday = reports.filter(
+    (record) =>
+      record.status === 'reject' && record.updatedAt.split('T')[0] === today,
+  ).length;
+
   return (
-    <div className='max-w-7xl mx-auto pl-4 pt-5 pr-4  md:pt-0 space-y-8'>
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 content-stretch'>
+    <div className="mx-auto max-w-7xl space-y-8 pl-4 pr-4 pt-5 md:pt-0">
+      <div className="grid grid-cols-1 content-stretch gap-8 lg:grid-cols-2">
         {/* Profile Summary */}
-        <div className='space-y-6  flex flex-col '>
-          <ReportSummary redFlagData={redFlagData} />
-          <TodayActivity />
+        <div className="flex flex-col space-y-6">
+          <ReportSummary reports={reports} />
+          <TodayActivity
+            createdToday={createdToday}
+            resolvedToday={resolvedToday}
+            rejectedToday={rejectedToday}
+          />
         </div>
         <Chart chartData={chartData} />
       </div>
 
-      <div className='mt-8'>
-        <ReportListItem redFlagData={redFlagData} />
+      <div className="mt-8">
+        <ReportListItem reports={shownReports} />
       </div>
     </div>
   );
