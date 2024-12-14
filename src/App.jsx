@@ -19,7 +19,10 @@ import CreateReport from './pages/CreateReport';
 import ReportDetailPage from './pages/ReportDetailPage';
 import EditReportPage from './pages/EditReportPage';
 import PageNotFound from './pages/PageNotFound';
+import HomePage from './pages/Home';
 import ProtectedRoutes from './ui/ProtectedRoutes';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 function App() {
   const queryClient = new QueryClient({
@@ -91,6 +94,9 @@ function App() {
           path: '/about',
           element: <AboutUs />,
         },
+        { path: '/home', element: <HomePage /> },
+        { path: '/service', element: <TermsOfServicePage /> },
+        { path: '/privacy', element: <PrivacyPolicyPage /> },
       ],
     },
     {

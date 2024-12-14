@@ -18,7 +18,7 @@ const ProtectedRoutes = ({ children }) => {
 
   if (!isAuthenticated) {
     toast.error('Please log in to access this page');
-    navigate('/login');
+    navigate('/home');
   }
 
   if (isAuthenticated) return children;
