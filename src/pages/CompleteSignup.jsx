@@ -74,17 +74,7 @@ const Signup = () => {
           />
           {errors.username && <Label>{errors.username.message}</Label>}
         </div>
-        <div className="w-full">
-          <Input
-            className="appearance-none"
-            type="number"
-            placeholder="Phone Number"
-            {...register('phoneNumber', {
-              required: 'Phone Number is required',
-            })}
-          />
-          {errors.phoneNumber && <Label>{errors.phoneNumber.message}</Label>}
-        </div>
+
         <Button type="submit">
           {isLoading ? <MiniSpinner /> : 'Complete Signup'}
         </Button>

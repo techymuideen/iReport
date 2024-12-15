@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useUser } from '../features/authentication/useUser';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import MiniSpinner from './MiniSpinner';
 
 const ProtectedRoutes = ({ children }) => {
@@ -17,7 +16,6 @@ const ProtectedRoutes = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    toast.error('Please log in to access this page');
     navigate('/home');
   }
 
