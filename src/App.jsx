@@ -23,7 +23,6 @@ import HomePage from './pages/Home';
 import ProtectedRoutes from './ui/ProtectedRoutes';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import '../public/css/output.css';
 
 function App() {
   const queryClient = new QueryClient({

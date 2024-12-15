@@ -158,24 +158,6 @@ const AccountUpdate = () => {
             <Input type="text" id="othername" {...register('othernames')} />
           </div>
 
-          <div>
-            <Label type="primary" id="phoneNumber">
-              Phone Number
-            </Label>
-            <Input
-              type="number"
-              id="phoneNumber"
-              {...register('phoneNumber', {
-                required: 'Phone number is required',
-              })}
-            />
-            {errors.phoneNumber && (
-              <p className="text-sm text-red-500">
-                {errors.phoneNumber.message}
-              </p>
-            )}
-          </div>
-
           <Button type="submit">
             {isPending ? <MiniSpinner /> : 'Save Settings'}
           </Button>

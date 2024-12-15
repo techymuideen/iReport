@@ -13,7 +13,6 @@ import {
 const COLORS = ['#0088FE', '#FFBB28', '#FF8042'];
 
 const Chart = ({ chartData }) => {
-  console.log(chartData);
   return (
     <div className="flex flex-col items-center rounded-lg bg-white p-6 shadow-md md:items-start">
       <h2 className="mb-4 text-center text-2xl font-semibold md:text-left">
