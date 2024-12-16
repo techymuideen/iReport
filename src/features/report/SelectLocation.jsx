@@ -4,28 +4,27 @@ import { BsFillGeoAltFill } from 'react-icons/bs';
 const SelectLocation = ({ location, setLocation }) => {
   const handleLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
+      navigator.geolocation.getCurrentPosition((position) => {
         setLocation({
           lat: position.coords.latitude,
           long: position.coords.longitude,
-          zoom: 8,
-          scrollZoom: false,
         });
       });
     }
   };
 
   return (
-    <div className='mb-4'>
-      <label className='block text-gray-700'>Geolocation</label>
+    <div className="mb-4">
+      <label className="block text-gray-700">Geolocation</label>
       <button
-        type='button'
+        type="button"
         onClick={handleLocation}
-        className='bg-sky-600 text-white py-2 px-4 rounded-md'>
-        Add a Location <BsFillGeoAltFill className='inline ml-2' />
+        className="rounded-md bg-sky-600 px-4 py-2 text-white"
+      >
+        Add a Location <BsFillGeoAltFill className="ml-2 inline" />
       </button>
       {location.lat && location.long && (
-        <p className='mt-2'>
+        <p className="mt-2">
           Latitude: {location.lat}, Longitude: {location.long}
         </p>
       )}

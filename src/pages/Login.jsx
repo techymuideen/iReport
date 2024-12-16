@@ -30,7 +30,7 @@ const Login = () => {
           <Input
             id="email-username"
             type="text"
-            placeholder="Email or Unsername"
+            placeholder="Email"
             {...register('email', {
               required: 'Please enter your email or username',
               minLength: {

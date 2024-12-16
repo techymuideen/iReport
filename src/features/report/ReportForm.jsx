@@ -9,16 +9,16 @@ import MapBox from './MapBox';
 import { useCreateReport } from './useCreateReport';
 import MiniSpinner from '../../ui/MiniSpinner';
 
-const ReportForm = ({ initialData, title }) => {
+const ReportForm = ({ title }) => {
   const { createReport, isLoading } = useCreateReport();
-  const [recordType, setRecordType] = useState(
-    initialData.recordType || 'red-flag',
-  );
-  const [images, setImages] = useState(initialData.images || []);
-  const [videos, setVideos] = useState(initialData.videos || []);
-  const [location, setLocation] = useState(
-    initialData.location || { lat: null, long: null },
-  );
+  const [recordType, setRecordType] = useState('red-flag');
+  const [images, setImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [existingVideos, setExistingVideos] = useState([]);
+  const [newVideos, setNewVideos] = useState([]);
+  const [location, setLocation] = useState({ lat: null, long: null });
   const [imageError, setImageError] = useState('');
   const [videoError, setVideoError] = useState('');
 
@@ -39,7 +39,8 @@ const ReportForm = ({ initialData, title }) => {
 
     payload.append('type', recordType);
 
-    if (location.lat && location.long) {
+    if (location.lat !== null && location.long !== null) {
+      console.log(location);
       payload.append('location', JSON.stringify(location));
     }
 
@@ -55,9 +56,23 @@ const ReportForm = ({ initialData, title }) => {
       });
     }
 
-    createReport(payload, {
-      onSuccess: () => reset(),
-    });
+    console.log(payload);
+    console.log(location);
+    createReport(
+      { payload },
+      {
+        onSuccess: () => {
+          setExistingImages([]);
+          setExistingVideos([]);
+          setNewImages([]);
+          setNewVideos([]);
+          setImages([]);
+          setVideos([]);
+          setLocation({ lat: null, long: null });
+          reset();
+        },
+      },
+    );
   };
 
   return (
@@ -125,12 +140,20 @@ const ReportForm = ({ initialData, title }) => {
           images={images}
           setImages={setImages}
           setImageError={setImageError}
+          newImages={newImages}
+          setNewImages={setNewImages}
+          existingImages={existingImages}
+          setExistingImages={setExistingImages}
         />
         {imageError && <span className="text-red-500">{imageError}</span>}
         <SelectVideo
           videos={videos}
           setVideos={setVideos}
+          newVideos={newVideos}
+          existingVideos={existingVideos}
+          setNewVideos={setNewVideos}
           setVideoError={setVideoError}
+          setExistingVideos={setExistingVideos}
         />
         {videoError && <span className="text-red-500">{videoError}</span>}
         <SelectLocation location={location} setLocation={setLocation} />

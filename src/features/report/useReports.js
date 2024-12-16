@@ -30,7 +30,7 @@ export const useReports = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['reproducts', filter1Value, filter2Value, page],
+    queryKey: ['reports', filter1Value, filter2Value, page],
     queryFn: () => getAllReport({ page, filter1, filter2 }),
   });
 

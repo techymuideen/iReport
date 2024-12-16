@@ -3,7 +3,15 @@ import { useDropzone } from 'react-dropzone';
 
 const MAX_TOTAL_SIZE = 50 * 1024 * 1024; // 50 MB in bytes
 
-const SelectVideo = ({ videos, setVideos, setVideoError }) => {
+const SelectVideo = ({
+  videos,
+  setVideos,
+  newVideos,
+  existingVideos,
+  setNewVideos,
+  setVideoError,
+  setExistingVideos,
+}) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       'video/*': ['.mp4'],
@@ -21,14 +29,17 @@ const SelectVideo = ({ videos, setVideos, setVideoError }) => {
       }
 
       // Check total number of files
-      if (acceptedFiles.length + videos.length > 2) {
+      if (
+        newVideos?.length + existingVideos?.length + acceptedFiles?.length >
+        2
+      ) {
         setVideoError('You can only upload up to 2 videos.');
         return;
       }
 
       // Check total file size
       const totalSize =
-        videos.reduce((acc, video) => acc + video.size, 0) +
+        existingVideos.reduce((acc, video) => acc + video.size, 0) +
         acceptedFiles.reduce((acc, file) => acc + file.size, 0);
 
       if (totalSize > MAX_TOTAL_SIZE) {
@@ -38,12 +49,23 @@ const SelectVideo = ({ videos, setVideos, setVideoError }) => {
 
       // Add valid files
       setVideos([...videos, ...acceptedFiles]);
+      setNewVideos([...newVideos, ...acceptedFiles]);
       setVideoError('');
     },
   });
 
   const removeVideo = (index) => {
-    setVideos((prevVideos) => prevVideos.filter((_, i) => i !== index));
+    const isExisting = typeof videos[index] === 'string'; // Check if it's an existing image (URL)
+
+    if (isExisting) {
+      setExistingVideos((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      setNewVideos((prev) =>
+        prev.filter((_, i) => i !== index - existingVideos.length),
+      );
+    }
+
+    setVideos((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -92,6 +114,10 @@ SelectVideo.propTypes = {
   videos: PropTypes.arrayOf(PropTypes.object || PropTypes.string).isRequired,
   setVideos: PropTypes.func.isRequired,
   setVideoError: PropTypes.func.isRequired,
+  existingVideos: PropTypes.arrayOf(PropTypes.string),
+  newVideos: PropTypes.arrayOf(PropTypes.object),
+  setNewVideos: PropTypes.func.isRequired,
+  setExistingVideos: PropTypes.func.isRequired,
 };
 
 export default SelectVideo;

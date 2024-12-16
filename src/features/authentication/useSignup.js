@@ -13,10 +13,8 @@ export const useSignup = () => {
 
     onSuccess: (response) => {
       toast.success(response.message);
-      console.log(response);
     },
     onError: (error) => {
-      console.log(error);
       toast.error(error.response.data.message);
     },
   });
