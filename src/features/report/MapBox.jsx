@@ -11,8 +11,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MapBox = ({ location, setLocation }) => {
   const handleViewChange = (evt) => {
-    setLocation((prevLocation) => ({
-      ...prevLocation,
+    setLocation(() => ({
       lat: evt.lngLat.lat,
       long: evt.lngLat.lng,
     }));
@@ -31,8 +30,7 @@ const MapBox = ({ location, setLocation }) => {
             center: [data.longitude, data.latitude],
           });
 
-          setLocation((prevLocation) => ({
-            ...prevLocation,
+          setLocation(() => ({
             lat: data.latitude,
             long: data.longitude,
           }));
@@ -52,7 +50,7 @@ const MapBox = ({ location, setLocation }) => {
       interactive={Boolean(setLocation)}
       style={{ height: 400, width: '100%' }}
       mapStyle="mapbox://styles/mapbox/streets-v11"
-      scrollZoom={location.scrollZoom}
+      scrollZoom={false}
       onClick={handleViewChange}
     >
       <Marker
@@ -72,8 +70,7 @@ const MapBox = ({ location, setLocation }) => {
           position="top-left"
           trackUserLocation
           onGeolocate={(e) =>
-            setLocation((prevLocation) => ({
-              ...prevLocation,
+            setLocation(() => ({
               lat: e.coords.latitude,
               long: e.coords.longitude,
             }))
@@ -89,8 +86,6 @@ MapBox.propTypes = {
   location: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     long: PropTypes.number.isRequired,
-    zoom: PropTypes.number,
-    scrollZoom: PropTypes.bool,
   }).isRequired,
   setLocation: PropTypes.func,
 };

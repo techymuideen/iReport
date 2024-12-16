@@ -6,7 +6,7 @@ export const useCreateReport = () => {
   const queryClient = useQueryClient();
 
   const { mutate: createReport, isPending: isLoading } = useMutation({
-    mutationFn: (data) => createReportApi(data),
+    mutationFn: ({ payload }) => createReportApi({ payload }),
     onSuccess: () => {
       queryClient.invalidateQueries('reports');
       toast.success('Report created successfully');

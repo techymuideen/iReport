@@ -172,8 +172,10 @@ const EditReport = () => {
           videos={videos}
           setVideos={setVideos}
           newVideos={newVideos}
+          existingVideos={existingVideos}
           setNewVideos={setNewVideos}
           setVideoError={setVideoError}
+          setExistingVideos={setExistingVideos}
         />
         {videoError && <span className="text-red-500">{videoError}</span>}
         <SelectLocation location={location} setLocation={setLocation} />

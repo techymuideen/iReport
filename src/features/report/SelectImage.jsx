@@ -28,9 +28,6 @@ const SelectImage = ({
         return;
       }
 
-      console.log(newImages);
-      console.log(existingImages);
-
       // Check total number of files
       if (
         newImages?.length + existingImages?.length + acceptedFiles?.length >
