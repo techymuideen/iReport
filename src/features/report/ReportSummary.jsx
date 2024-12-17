@@ -7,7 +7,8 @@ const ReportSummary = ({ reports }) => {
     (record) => record.status === 'resolved',
   ).length;
   const unresolved = reports.filter(
-    (record) => record.status === 'investigating',
+    (record) =>
+      record.status === 'investigating' || record.status === 'pending',
   ).length;
   const rejected = reports.filter(
     (record) => record.status === 'rejected',

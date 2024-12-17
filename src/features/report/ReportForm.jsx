@@ -56,8 +56,6 @@ const ReportForm = ({ title }) => {
       });
     }
 
-    console.log(payload);
-    console.log(location);
     createReport(
       { payload },
       {
