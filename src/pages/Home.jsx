@@ -15,7 +15,7 @@ const HomePage = () => {
             better community.
           </p>
           <Link to="/signup">
-            <button className="animate__animated animate__fadeIn animate__delay-3s rounded-lg bg-yellow-500 px-8 py-3 text-xl text-gray-800 transition-all duration-300 ease-in-out hover:bg-yellow-400">
+            <button className="animate__animated animate__fadeIn animate__delay-3s rounded-lg bg-gray-50 px-8 py-3 text-xl text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-100">
               Get Started
             </button>
           </Link>
