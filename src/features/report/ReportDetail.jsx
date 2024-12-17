@@ -152,16 +152,18 @@ const ReportDetail = () => {
                 <Button variation="reject">Reject</Button>
               </>
             )}
-            {!user?.isAdmin && (
+            {!user?.isAdmin && report?.status === 'pending' && (
               <Button onClick={() => navigate(`/report/edit/${reportId}`)}>
                 Edit
               </Button>
             )}
-            <Modal.Open opens="delete">
-              <Button variation="danger">
-                {isDeleting ? <MiniSpinner /> : 'Delete'}
-              </Button>
-            </Modal.Open>
+            {report?.status !== 'investigating' && (
+              <Modal.Open opens="delete">
+                <Button variation="danger">
+                  {isDeleting ? <MiniSpinner /> : 'Delete'}
+                </Button>
+              </Modal.Open>
+            )}
             <Modal.Window name="delete">
               <ConfirmDelete
                 resourceName="report"
