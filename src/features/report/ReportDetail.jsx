@@ -74,16 +74,13 @@ const ReportDetail = () => {
             className={`rounded px-2 py-1 ${
               report.status === 'resolved'
                 ? 'bg-[#0088FE] text-white'
-                : report.status === 'draft' || report.status === 'investigation'
+                : report.status === 'pending' ||
+                    report.status === 'investigating'
                   ? 'bg-[#FFBB28] text-white'
                   : 'bg-[#FF8042] text-white'
             }`}
           >
-            {report.status === 'resolved'
-              ? 'Resolved'
-              : report.status === 'investigation'
-                ? 'Investigation'
-                : 'Rejected'}
+            {report.status}
           </span>
         </p>
 
