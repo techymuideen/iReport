@@ -1,7 +1,10 @@
 import { FaBullhorn, FaRegEdit, FaUsers } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useUser } from '../features/authentication/useUser';
 
 const HomePage = () => {
+  const { isAuthenticated } = useUser();
+
   return (
     <div className="bg-gray-50 font-sans">
       {/* Hero Section */}
@@ -14,11 +17,13 @@ const HomePage = () => {
             Empowering citizens to report issues quickly and efficiently for a
             better community.
           </p>
-          <Link to="/signup">
-            <button className="animate__animated animate__fadeIn animate__delay-3s rounded-lg bg-gray-50 px-8 py-3 text-xl text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-100">
-              Get Started
-            </button>
-          </Link>
+          {!isAuthenticated && (
+            <Link to="/signup">
+              <button className="animate__animated animate__fadeIn animate__delay-3s rounded-lg bg-gray-50 px-8 py-3 text-xl text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-100">
+                Get Started
+              </button>
+            </Link>
+          )}
         </div>
       </section>
 
