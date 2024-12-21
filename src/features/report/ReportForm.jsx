@@ -40,7 +40,6 @@ const ReportForm = ({ title }) => {
     payload.append('type', recordType);
 
     if (location.lat !== null && location.long !== null) {
-      console.log(location);
       payload.append('location', JSON.stringify(location));
     }
 

@@ -9,8 +9,8 @@ import toast from 'react-hot-toast';
 import { useDeleteReport } from '../../features/report/useDeleteReport';
 import MiniSpinner from '../../ui/MiniSpinner';
 import { useUser } from '../../features/authentication/useUser';
-
 import { useEffect, useState } from 'react';
+import { useChangeStatus } from '../../features/report/useChangeStatus';
 
 const ReportDetail = () => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const ReportDetail = () => {
   const { report, isLoading, error } = useReport();
   const { deleteReport, isLoading: isDeleting } = useDeleteReport();
   const { user } = useUser();
+  const { changeStatus, isPending } = useChangeStatus();
 
   const [location, setLocation] = useState(
     report?.location || { lat: null, long: null },
@@ -80,7 +81,7 @@ const ReportDetail = () => {
                   : 'bg-[#FF8042] text-white'
             }`}
           >
-            {report.status}
+            {report.status.charAt(0).toUpperCase() + report.status.slice(1)}
           </span>
         </p>
 
@@ -148,8 +149,39 @@ const ReportDetail = () => {
           <Modal>
             {user?.isAdmin && (
               <>
-                <Button variation="resolve">Resolve</Button>
-                <Button variation="reject">Reject</Button>
+                {report?.status === 'pending' && (
+                  <Button
+                    variation="investigate"
+                    onClick={() =>
+                      changeStatus({ reportId, value: 'investigating' })
+                    }
+                  >
+                    {isPending ? <MiniSpinner /> : 'Investigate'}
+                  </Button>
+                )}
+                {report?.status === 'investigating' && (
+                  <Button
+                    disabled={isPending}
+                    variation="resolve"
+                    onClick={() =>
+                      changeStatus({ reportId, value: 'resolved' })
+                    }
+                  >
+                    {isPending ? <MiniSpinner /> : 'Resolve'}
+                  </Button>
+                )}
+
+                {report?.status === 'investigating' && (
+                  <Button
+                    disabled={isPending}
+                    variation="reject"
+                    onClick={() =>
+                      changeStatus({ reportId, value: 'rejected' })
+                    }
+                  >
+                    {isPending ? <MiniSpinner /> : 'Reject'}
+                  </Button>
+                )}
               </>
             )}
             {!user?.isAdmin && report?.status === 'pending' && (
@@ -157,7 +189,7 @@ const ReportDetail = () => {
                 Edit
               </Button>
             )}
-            {report?.status !== 'investigating' && (
+            {!user?.isAdmin && report?.status !== 'investigating' && (
               <Modal.Open opens="delete">
                 <Button variation="danger">
                   {isDeleting ? <MiniSpinner /> : 'Delete'}

@@ -8,6 +8,7 @@ const PasswordInput = forwardRef(({ placeholder, ...props }, ref) => {
   return (
     <div className="relative flex w-full items-center">
       <input
+        autoComplete="true"
         id={props.id}
         ref={ref}
         className="w-full rounded-md border-[1px] bg-none px-4 py-2 outline-none"

@@ -93,3 +93,21 @@ export const deleteReport = async (reportId) => {
 
   return response;
 };
+
+export const changeStatus = async ({ reportId, value }) => {
+  const token = localStorage.getItem('token');
+
+  const { data, error } = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/api/v1/reports/status/${reportId}`,
+    { status: value },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};
