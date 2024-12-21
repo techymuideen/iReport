@@ -9,10 +9,12 @@ import Spinner from '../../ui/Spinner';
 
 const Profile = () => {
   const { reports, isLoading, error } = useReports();
+
   if (isLoading) return <Spinner />;
+
   if (error) toast.error(error.message);
 
-  const shownReports = reports.slice(0, 5);
+  const shownReports = reports?.slice(0, 5);
 
   // Calculate resolved, unresolved, rejected counts
   const resolved = reports.filter(
@@ -50,7 +52,7 @@ const Profile = () => {
   // Count reports resolved today
   const rejectedToday = reports.filter(
     (record) =>
-      record.status === 'reject' && record.updatedAt.split('T')[0] === today,
+      record.status === 'rejected' && record.updatedAt.split('T')[0] === today,
   ).length;
 
   return (
