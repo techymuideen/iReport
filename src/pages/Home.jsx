@@ -1,4 +1,11 @@
-import { FaBullhorn, FaRegEdit, FaUsers } from 'react-icons/fa';
+import {
+  FaBullhorn,
+  FaCheckCircle,
+  FaClipboardList,
+  FaRegEdit,
+  FaSearch,
+  FaUsers,
+} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useUser } from '../features/authentication/useUser';
 
@@ -33,22 +40,22 @@ const HomePage = () => {
           Key Features
         </h2>
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="transform rounded-lg bg-blue-50 p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
-            <FaBullhorn className="mb-6 text-5xl text-blue-600" />
+          <div className="flex transform flex-col items-center rounded-lg bg-blue-50 p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
+            <FaBullhorn className="mb-6 text-center text-5xl text-blue-600" />
             <h3 className="mb-4 text-2xl font-semibold">Easy Reporting</h3>
             <p className="text-gray-600">
               Quickly report issues with an intuitive and simple form.
             </p>
           </div>
-          <div className="transform rounded-lg bg-blue-50 p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
-            <FaRegEdit className="mb-6 text-5xl text-blue-600" />
+          <div className="flex transform flex-col items-center rounded-lg bg-blue-50 p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
+            <FaRegEdit className="mb-6 text-center text-5xl text-blue-600" />
             <h3 className="mb-4 text-2xl font-semibold">Track Reports</h3>
             <p className="text-gray-600">
               Track the status of your reported issues in real-time.
             </p>
           </div>
-          <div className="transform rounded-lg bg-blue-50 p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
-            <FaUsers className="mb-6 text-5xl text-blue-600" />
+          <div className="flex transform flex-col items-center rounded-lg bg-blue-50 p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
+            <FaUsers className="mb-6 text-center text-5xl text-blue-600" />
             <h3 className="mb-4 text-2xl font-semibold">Community Support</h3>
             <p className="text-gray-600">
               Collaborate with the community to resolve issues faster.
@@ -58,35 +65,39 @@ const HomePage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="bg-gray-100 py-20">
+      <section className="bg-gray-100 px-4 py-20">
         <h2 className="mb-12 text-center text-3xl font-semibold text-gray-800">
           How It Works
         </h2>
-        <div className="mx-auto max-w-4xl space-y-12">
-          <div className="flex items-start space-x-6">
-            <div className="flex-shrink-0">
-              <div className="text-4xl text-blue-600">1.</div>
-            </div>
-            <p className="text-lg text-gray-700">
-              Report an issue by submitting a detailed form with relevant
-              information.
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex transform flex-col items-center rounded-lg bg-white p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
+            <FaClipboardList className="mb-6 text-center text-5xl text-blue-600" />
+            <h3 className="mb-4 text-2xl font-semibold">
+              Step 1: Submit a Report
+            </h3>
+            <p className="text-gray-600">
+              Fill out a simple form to describe the issue and submit it for
+              review.
             </p>
           </div>
-          <div className="flex items-start space-x-6">
-            <div className="flex-shrink-0">
-              <div className="text-4xl text-blue-600">2.</div>
-            </div>
-            <p className="text-lg text-gray-700">
-              The issue will be reviewed and prioritized by the appropriate
-              authorities.
+          <div className="flex transform flex-col items-center rounded-lg bg-white p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
+            <FaSearch className="mb-6 text-center text-5xl text-blue-600" />
+            <h3 className="mb-4 text-2xl font-semibold">
+              Step 2: Review and Verify
+            </h3>
+            <p className="text-gray-600">
+              Our team reviews the submitted report to verify the details and
+              validity.
             </p>
           </div>
-          <div className="flex items-start space-x-6">
-            <div className="flex-shrink-0">
-              <div className="text-4xl text-blue-600">3.</div>
-            </div>
-            <p className="text-lg text-gray-700">
-              You’ll receive notifications about the progress of your report.
+          <div className="flex transform flex-col items-center rounded-lg bg-white p-8 text-center shadow-lg transition-all duration-300 hover:scale-105">
+            <FaCheckCircle className="mb-6 text-center text-5xl text-blue-600" />
+            <h3 className="mb-4 text-2xl font-semibold">
+              Step 3: Resolve and Notify
+            </h3>
+            <p className="text-gray-600">
+              Once resolved, you’ll receive a notification with the resolution
+              details.
             </p>
           </div>
         </div>
