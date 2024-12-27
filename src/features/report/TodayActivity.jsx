@@ -7,7 +7,7 @@ const TodayActivity = ({ createdToday, resolvedToday, rejectedToday }) => {
       <div className="space-y-3">
         <div className="flex flex-col justify-between">
           <div className="font-medium">
-            {createdToday === 0 && resolvedToday === 0
+            {createdToday === 0 && resolvedToday === 0 && rejectedToday === 0
               ? 'No activity today'
               : ''}
           </div>

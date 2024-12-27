@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from 'react-icons/io5';
@@ -9,6 +9,21 @@ import { useUser } from '../features/authentication/useUser';
 const Header = () => {
   const { user, isAuthenticated } = useUser();
   const { showNavMobile, setShowNavMobile } = useContext(AppContext);
+
+  const location = useLocation();
+
+  // State to control the visibility of the toggle button
+  const [showToggleButton, setShowToggleButton] = useState(true);
+
+  useEffect(() => {
+    // Define routes where the NavBar and toggle button should not appear
+    const noNavRoutes = ['/home', '/about', '/privacy', '/service'];
+
+    // Update toggle button visibility based on the current route
+    setShowToggleButton(
+      !noNavRoutes.includes(location.pathname) || showNavMobile,
+    );
+  }, [location.pathname, showNavMobile]);
 
   const handleChange = () => {
     setShowNavMobile((prev) => !prev);
@@ -37,13 +52,15 @@ const Header = () => {
           </Link>
         )}
 
-        <div onClick={handleChange} className="inline md:hidden">
-          {showNavMobile ? (
-            <IoClose color="#fff" size={30} />
-          ) : (
-            <GiHamburgerMenu size={30} color="#fff" />
-          )}
-        </div>
+        {showToggleButton && (
+          <div onClick={handleChange} className="inline md:hidden">
+            {showNavMobile ? (
+              <IoClose color="#fff" size={30} />
+            ) : (
+              <GiHamburgerMenu size={30} color="#fff" />
+            )}
+          </div>
+        )}
       </nav>
     </header>
   );

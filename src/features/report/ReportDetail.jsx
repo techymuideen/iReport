@@ -60,12 +60,12 @@ const ReportDetail = () => {
           <strong>Record Type:</strong>{' '}
           <span
             className={`rounded px-2 py-1 ${
-              report.recordType === 'red-flag'
+              report.type === 'red-flag'
                 ? 'bg-red-100 text-red-700'
                 : 'bg-green-100 text-green-700'
             }`}
           >
-            {report.recordType === 'red-flag' ? 'Red-Flag' : 'Intervention'}
+            {report.type === 'red-flag' ? 'Red-Flag' : 'Intervention'}
           </span>
         </p>
 

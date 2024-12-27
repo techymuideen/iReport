@@ -15,7 +15,6 @@ const Profile = () => {
   if (error) toast.error(error.message);
 
   const shownReports = reports?.slice(0, 5);
-
   // Calculate resolved, unresolved, rejected counts
   const resolved = reports.filter(
     (record) => record.status === 'resolved',
@@ -40,20 +39,20 @@ const Profile = () => {
 
   // Count reports created today
   const createdToday = reports.filter(
-    (record) => record.createdAt.split('T')[0] === today,
+    (record) => record.createdAt.split('T')[0] === today, // Safely access createdAt
   ).length;
 
-  // Count reports resolved today
-  const resolvedToday = reports.filter(
-    (record) =>
-      record.status === 'resolved' && record.updatedAt.split('T')[0] === today,
-  ).length;
+  const resolvedToday = reports.filter((record) => {
+    return (
+      record.status === 'resolved' && record.updatedAt.split('T')[0] === today // Safely access updatedAt
+    );
+  }).length;
 
-  // Count reports resolved today
-  const rejectedToday = reports.filter(
-    (record) =>
-      record.status === 'rejected' && record.updatedAt.split('T')[0] === today,
-  ).length;
+  const rejectedToday = reports.filter((record) => {
+    return (
+      record.updatedAt.split('T')[0] === today && record.status === 'rejected'
+    );
+  }).length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 pl-4 pr-4 pt-5 md:pt-0">
@@ -67,7 +66,7 @@ const Profile = () => {
             rejectedToday={rejectedToday}
           />
         </div>
-        <Chart chartData={chartData} />
+        {reports.length > 0 && <Chart chartData={chartData} />}
       </div>
 
       <div className="mt-8">

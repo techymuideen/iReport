@@ -32,7 +32,7 @@ const Signup = () => {
         <div className="w-full">
           <Input
             type="text"
-            placeholder="Firstname"
+            placeholder="Firstname*"
             {...register('firstname', {
               required: 'Firstname is required',
             })}
@@ -42,7 +42,7 @@ const Signup = () => {
         <div className="w-full">
           <Input
             type="text"
-            placeholder="Lastname"
+            placeholder="Lastname*"
             {...register('lastname', {
               required: 'Lastname is required',
             })}
@@ -59,7 +59,7 @@ const Signup = () => {
         <div className="w-full">
           <Input
             type="text"
-            placeholder="Username"
+            placeholder="Username*"
             {...register('username', {
               required: 'Username is required',
               pattern: {
